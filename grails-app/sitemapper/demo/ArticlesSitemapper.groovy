@@ -1,5 +1,6 @@
 package demo
 
+import grails.plugins.sitemapper.ContentChangeFrequency
 import grails.plugins.sitemapper.EntryWriter
 import grails.plugins.sitemapper.impl.PaginationSitemapper
 
@@ -21,17 +22,18 @@ class ArticlesSitemapper extends PaginationSitemapper {
         1.times { n ->
           entryWriter.addEntry "/articles/${n}", new Date() - 1
         }
+
         break;
 
       case 1:
         2.times { n ->
-          entryWriter.addEntry "/articles/${n}", new Date(), "monthly", 0.5
+          entryWriter.addEntry "/articles/${n}", new Date(), ContentChangeFrequency.MONTHLY, 0.5
         }
         break;
 
       case 2:
         3.times { n ->
-          entryWriter.addEntry "/articles/${n}", new Date(), "daily", 0.6
+          entryWriter.addEntry "/articles/${n}", new Date(), ContentChangeFrequency.DAILY, 0.6
         }
         break;
     }
