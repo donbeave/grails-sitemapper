@@ -27,6 +27,13 @@ grails.project.dependency.resolution = {
     // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
     compile 'org.apache.httpcomponents:httpclient:4.1.1'
-    test "org.objenesis:objenesis:1.2", "cglib:cglib-nodep:2.2"
+    test 'org.objenesis:objenesis:1.2', 'cglib:cglib-nodep:2.2'
+    test 'org.spockframework:spock-grails-support:0.7-groovy-2.0'
+  }
+  plugins {
+    test(':spock:0.7') {
+      exclude 'spock-grails-support'
+    }
+    build ':release:2.2.0'
   }
 }
