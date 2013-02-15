@@ -1,6 +1,7 @@
 package grails.plugins.sitemapper.impl;
 
 import grails.plugins.sitemapper.EntryWriter;
+import grails.plugins.sitemapper.SitemapServerUrlResolver;
 import grails.plugins.sitemapper.Sitemapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +22,14 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     writeIndexHead(writer);
 
     SitemapDateUtils dateUtils = new SitemapDateUtils();
-    String serverUrl = serverUrlResolver.getServerUrl();
+
     for (String mapperName : sitemappers.keySet()) {
       Sitemapper mapper = sitemappers.get(mapperName);
+
+      String serverUrl = getServerUrl(mapper);
+
       Date previousUpdate = mapper.getPreviousUpdate();
+
       if (previousUpdate != null) {
         String lastMod = dateUtils.formatForSitemap(previousUpdate);
 
@@ -54,7 +59,8 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
 
   @Override
   public void writeSitemapEntries(PrintWriter writer, Sitemapper mapper) throws IOException {
-    String serverUrl = serverUrlResolver.getServerUrl();
+    String serverUrl = getServerUrl(mapper);
+
     EntryWriter entryWriter = new XmlEntryWriter(writer, serverUrl);
     mapper.withEntryWriter(entryWriter);
   }
@@ -86,6 +92,20 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
 
   private void writeSitemapTail(PrintWriter writer) {
     writer.print("</urlset>");
+  }
+
+  private String getServerUrl(Sitemapper sitemapper) {
+    String defaultServerUrl = serverUrlResolver.getServerUrl();
+
+    // override server url for some sitemaps
+    String serverUrl = defaultServerUrl;
+
+    if (sitemapper instanceof SitemapServerUrlResolver &&
+        ((SitemapServerUrlResolver) sitemapper).getServerUrl() != null) {
+      serverUrl = ((SitemapServerUrlResolver) sitemapper).getServerUrl();
+    }
+
+    return serverUrl;
   }
 
 }
