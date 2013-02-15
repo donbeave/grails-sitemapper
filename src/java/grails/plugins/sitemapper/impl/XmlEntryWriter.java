@@ -52,7 +52,11 @@ final class XmlEntryWriter implements EntryWriter {
   }
 
   protected void printLocation(String locationUrl) throws IOException {
-    printTag(LOCATION_TAG, serverUrl + locationUrl);
+    if (locationUrl.startsWith("http://") || locationUrl.startsWith("https://")) {
+      printTag(LOCATION_TAG, locationUrl);
+    } else {
+      printTag(LOCATION_TAG, serverUrl + locationUrl);
+    }
   }
 
   protected void printLastModification(Date modifiedAt) throws IOException {
