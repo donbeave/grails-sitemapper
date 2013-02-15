@@ -1,7 +1,7 @@
-import grails.plugins.sitemapper.*
-import grails.plugins.sitemapper.impl.*
+import grails.plugins.sitemapper.ConfigSitemapServerUrlResolver
 import grails.plugins.sitemapper.artefact.SitemapperArtefactHandler
-
+import grails.plugins.sitemapper.impl.SearchEnginePinger
+import grails.plugins.sitemapper.impl.XmlSitemapWriter
 import org.apache.http.impl.client.DefaultHttpClient
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 

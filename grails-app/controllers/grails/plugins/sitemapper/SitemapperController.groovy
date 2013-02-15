@@ -1,10 +1,9 @@
 package grails.plugins.sitemapper
 
-import grails.plugins.sitemapper.impl.XmlSitemapWriter;
+import grails.plugins.sitemapper.impl.XmlSitemapWriter
+import org.springframework.util.Assert
 
-import javax.servlet.ServletOutputStream;
-
-import org.springframework.util.Assert;
+import javax.servlet.ServletOutputStream
 
 /**
  * Generates sitemaps on the fly. The XML output is piped directly to 

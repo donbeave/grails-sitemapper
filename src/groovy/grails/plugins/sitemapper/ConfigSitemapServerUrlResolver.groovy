@@ -10,24 +10,24 @@ import org.codehaus.groovy.grails.plugins.support.aware.GrailsApplicationAware
  */
 class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver, GrailsApplicationAware {
 
-    GrailsApplication grailsApplication
+  GrailsApplication grailsApplication
 
-    public String getServerUrl() {
-        String serverUrl = getServerUrlFromConfiguration()
-        if (serverUrl == null) {
-            throw new SitemapperException("Unable to find server url, please set grails.serverURL "
-                    + "in Config.groovy, or provided your own implementation of SitemapServerUrlResolver.")
-        }
-        
-        return removeTrailingSlash(serverUrl)
+  public String getServerUrl() {
+    String serverUrl = getServerUrlFromConfiguration()
+    if (serverUrl == null) {
+      throw new SitemapperException("Unable to find server url, please set grails.serverURL "
+          + "in Config.groovy, or provided your own implementation of SitemapServerUrlResolver.")
     }
-    
-    protected String getServerUrlFromConfiguration() {
-        grailsApplication.config?.grails?.serverURL?.toString()
-    }
-    
-    protected String removeTrailingSlash(String serverUrl) {
-        serverUrl.endsWith("/") ? serverUrl.substring(0, serverUrl.size() - 1) : serverUrl
-    }
-    
+
+    return removeTrailingSlash(serverUrl)
+  }
+
+  protected String getServerUrlFromConfiguration() {
+    grailsApplication.config?.grails?.serverURL?.toString()
+  }
+
+  protected String removeTrailingSlash(String serverUrl) {
+    serverUrl.endsWith("/") ? serverUrl.substring(0, serverUrl.size() - 1) : serverUrl
+  }
+
 }

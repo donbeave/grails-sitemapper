@@ -10,7 +10,7 @@ siteMapCreate = { String destPath = defaultDestPath ->
 
   generateIndexFile(sitemapWriter, destPath)
 
-  for (String mapperName: sitemapWriter.getSitemappers().keySet()) {
+  for (String mapperName : sitemapWriter.getSitemappers().keySet()) {
     def mapper = sitemapWriter.getSitemappers().get(mapperName);
 
     if (paginationSitemapperClass.isInstance(mapper)) {
@@ -31,7 +31,7 @@ generateIndexFile = { sitemapWriter, String destPath = defaultDestPath ->
   indexWriter.flush()
 }
 
-generateUrlSetFile = {sitemapWriter, mapper, part, fileName, String destPath = defaultDestPath ->
+generateUrlSetFile = { sitemapWriter, mapper, part, fileName, String destPath = defaultDestPath ->
   ant.echo "Generating ${fileName} ..."
 
   PrintWriter urlsetWriter = new PrintWriter(new File("${destPath}/${fileName}"))

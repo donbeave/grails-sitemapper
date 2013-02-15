@@ -2,7 +2,6 @@ package grails.plugins.sitemapper.impl
 
 import grails.plugin.spock.UnitSpec
 import grails.plugins.sitemapper.SitemapServerUrlResolver
-
 import org.apache.http.client.HttpClient
 
 class SearchEnginePingerSpec extends UnitSpec {

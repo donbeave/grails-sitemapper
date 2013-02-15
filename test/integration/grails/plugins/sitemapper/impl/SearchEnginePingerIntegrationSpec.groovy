@@ -1,7 +1,9 @@
 package grails.plugins.sitemapper.impl
 
 import grails.plugin.spock.IntegrationSpec
-import kim.spock.httpmock.*
+import kim.spock.httpmock.HttpServer
+import kim.spock.httpmock.TestHttpServer
+import kim.spock.httpmock.WithHttpServer
 
 @WithHttpServer(port = 23456)
 class SearchEnginePingerIntegrationSpec extends IntegrationSpec {
