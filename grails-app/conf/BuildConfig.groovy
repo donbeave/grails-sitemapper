@@ -32,7 +32,7 @@ grails.project.dependency.resolution = {
         test 'org.spockframework:spock-grails-support:0.7-groovy-2.0'
     }
     plugins {
-        build ':tomcat:7.0.50.1', ':release:3.0.1', ':rest-client-builder:1.0.3', {
+        build ':tomcat:7.0.52.1', ':release:3.0.1', ':rest-client-builder:1.0.3', {
             export = false
         }
 
