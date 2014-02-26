@@ -20,7 +20,7 @@ grails.project.dependency.resolution = {
         mavenCentral()
     }
     dependencies {
-        compile 'org.apache.httpcomponents:httpclient:4.1.1'
+//        compile 'org.apache.httpcomponents:httpclient:4.1.1'
         test 'org.objenesis:objenesis:1.2', 'cglib:cglib-nodep:2.2'
         test 'org.spockframework:spock-grails-support:0.7-groovy-2.0'
     }
