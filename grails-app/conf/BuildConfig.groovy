@@ -2,6 +2,8 @@ grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
+
+grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
   // inherit Grails' default dependencies
   inherits("global") {
@@ -14,26 +16,21 @@ grails.project.dependency.resolution = {
     grailsHome()
     grailsCentral()
 
-    // uncomment the below to enable remote dependency resolution
-    // from public Maven repositories
-    //mavenLocal()
+    mavenLocal()
     mavenCentral()
-    //mavenRepo "http://snapshots.repository.codehaus.org"
-    //mavenRepo "http://repository.codehaus.org"
-    //mavenRepo "http://download.java.net/maven/2/"
-    //mavenRepo "http://repository.jboss.com/maven2/"
   }
   dependencies {
-    // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
     compile 'org.apache.httpcomponents:httpclient:4.1.1'
     test 'org.objenesis:objenesis:1.2', 'cglib:cglib-nodep:2.2'
     test 'org.spockframework:spock-grails-support:0.7-groovy-2.0'
   }
   plugins {
+    build ':tomcat:7.0.50.1', ':release:3.0.1', ':rest-client-builder:1.0.3', {
+      export = false
+    }
+
     test(':spock:0.7') {
       exclude 'spock-grails-support'
     }
-    build ':release:2.2.0'
   }
 }
