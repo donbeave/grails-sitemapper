@@ -1,3 +1,6 @@
+/**
+ * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
+ */
 includeTargets << grailsScript("Init")
 
 includeTargets << grailsScript("Compile")
@@ -6,9 +9,9 @@ includeTargets << grailsScript("_GrailsCreateArtifacts")
 includeTargets << new File("${sitemapperPluginDir}/scripts/_SitemapCreate.groovy")
 
 target(main: "Generate sitemaps files") {
-  depends(compile, parseArguments, configureProxy, packageApp, classpath, loadApp, configureApp)
+    depends(compile, parseArguments, configureProxy, packageApp, classpath, loadApp, configureApp)
 
-  siteMapCreate()
+    siteMapCreate()
 }
 
 setDefaultTarget(main)

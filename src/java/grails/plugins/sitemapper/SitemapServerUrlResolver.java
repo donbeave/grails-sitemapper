@@ -1,10 +1,10 @@
 package grails.plugins.sitemapper;
 
 /**
- * @author Kim A. Betti
+ * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
 public interface SitemapServerUrlResolver {
 
-  String getServerUrl();
+    String getServerUrl();
 
 }

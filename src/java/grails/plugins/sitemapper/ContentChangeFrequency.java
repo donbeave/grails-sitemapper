@@ -14,9 +14,11 @@ package grails.plugins.sitemapper;
  * "never" so that they can handle unexpected changes to those pages.
  * <p/>
  * - from sitemaps.org
+ *
+ * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
 public enum ContentChangeFrequency {
 
-  ALWAYS, HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY, NEVER
+    ALWAYS, HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY, NEVER
 
 }

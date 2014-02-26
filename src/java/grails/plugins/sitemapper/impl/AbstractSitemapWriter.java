@@ -14,65 +14,68 @@ import java.util.Set;
 
 import static grails.plugins.sitemapper.artefact.SitemapperArtefactHandler.SUFFIX;
 
+/**
+ * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
+ */
 public abstract class AbstractSitemapWriter {
 
-  protected SitemapServerUrlResolver serverUrlResolver;
-  protected Map<String, Sitemapper> sitemappers = new HashMap<String, Sitemapper>();
+    protected SitemapServerUrlResolver serverUrlResolver;
+    protected Map<String, Sitemapper> sitemappers = new HashMap<String, Sitemapper>();
 
-  public abstract void writeIndexEntries(PrintWriter writer) throws IOException;
+    public abstract void writeIndexEntries(PrintWriter writer) throws IOException;
 
-  public void writeSitemapEntries(PrintWriter writer, String sourceName, Integer pageNumber)
-      throws IOException {
-    Sitemapper mapper = getMapperByName(sourceName);
+    public void writeSitemapEntries(PrintWriter writer, String sourceName, Integer pageNumber)
+            throws IOException {
+        Sitemapper mapper = getMapperByName(sourceName);
 
-    writeSitemapEntries(writer, mapper, pageNumber);
-  }
-
-  public void writeSitemapEntries(PrintWriter writer, Sitemapper sitemapper, Integer pageNumber)
-      throws IOException {
-    if (sitemapper instanceof PaginationSitemapper) {
-      ((PaginationSitemapper) sitemapper).setPageNumber(pageNumber);
+        writeSitemapEntries(writer, mapper, pageNumber);
     }
 
-    writeSitemapEntries(writer, sitemapper);
-  }
+    public void writeSitemapEntries(PrintWriter writer, Sitemapper sitemapper, Integer pageNumber)
+            throws IOException {
+        if (sitemapper instanceof PaginationSitemapper) {
+            ((PaginationSitemapper) sitemapper).setPageNumber(pageNumber);
+        }
 
-  protected Sitemapper getMapperByName(String name) {
-    String mapperName = name.toLowerCase();
-    Sitemapper mapper = sitemappers.get(mapperName);
-    if (mapper == null) {
-      throw new RuntimeException("Unable to find source with name " + name);
+        writeSitemapEntries(writer, sitemapper);
     }
 
-    return mapper;
-  }
+    protected Sitemapper getMapperByName(String name) {
+        String mapperName = name.toLowerCase();
+        Sitemapper mapper = sitemappers.get(mapperName);
+        if (mapper == null) {
+            throw new RuntimeException("Unable to find source with name " + name);
+        }
 
-  public abstract void writeSitemapEntries(PrintWriter writer, Sitemapper m) throws IOException;
-
-  public Map<String, Sitemapper> getSitemappers() {
-    return sitemappers;
-  }
-
-  @Required
-  @Autowired
-  public void setSitemappers(Set<Sitemapper> newMappers) {
-    this.sitemappers.clear();
-    for (Sitemapper mapper : newMappers) {
-      String mapperName = getMapperName(mapper.getClass());
-      this.sitemappers.put(mapperName, mapper);
+        return mapper;
     }
-  }
 
-  protected String getMapperName(Class<? extends Sitemapper> sitemapperClass) {
-    String className = sitemapperClass.getSimpleName();
-    Assert.isTrue(className.endsWith(SUFFIX));
-    int endIndex = className.length() - SUFFIX.length();
-    return className.substring(0, endIndex).toLowerCase();
-  }
+    public abstract void writeSitemapEntries(PrintWriter writer, Sitemapper m) throws IOException;
 
-  @Required
-  public void setSitemapServerUrlResolver(SitemapServerUrlResolver serverUrlResolver) {
-    this.serverUrlResolver = serverUrlResolver;
-  }
+    public Map<String, Sitemapper> getSitemappers() {
+        return sitemappers;
+    }
+
+    @Required
+    @Autowired
+    public void setSitemappers(Set<Sitemapper> newMappers) {
+        this.sitemappers.clear();
+        for (Sitemapper mapper : newMappers) {
+            String mapperName = getMapperName(mapper.getClass());
+            this.sitemappers.put(mapperName, mapper);
+        }
+    }
+
+    protected String getMapperName(Class<? extends Sitemapper> sitemapperClass) {
+        String className = sitemapperClass.getSimpleName();
+        Assert.isTrue(className.endsWith(SUFFIX));
+        int endIndex = className.length() - SUFFIX.length();
+        return className.substring(0, endIndex).toLowerCase();
+    }
+
+    @Required
+    public void setSitemapServerUrlResolver(SitemapServerUrlResolver serverUrlResolver) {
+        this.serverUrlResolver = serverUrlResolver;
+    }
 
 }

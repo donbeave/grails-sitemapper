@@ -5,12 +5,12 @@ import java.util.Date;
 /**
  * Sitemapper artefacts have to implement this interface.
  *
- * @author Kim A. Betti
+ * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
 public interface Sitemapper {
 
-  Date getPreviousUpdate();
+    Date getPreviousUpdate();
 
-  void withEntryWriter(EntryWriter entryWriter);
+    void withEntryWriter(EntryWriter entryWriter);
 
 }
