@@ -15,6 +15,7 @@
  */
 package grails.plugins.sitemapper
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.Assert
 
 import javax.servlet.http.HttpServletResponse
@@ -38,6 +39,8 @@ class SitemapperController {
     def grailsApplication
     def sitemapWriter
 
+    private Set<Sitemapper> sitemappers
+
     /**
      *  The index sitemap
      *  ------------------
@@ -55,6 +58,7 @@ class SitemapperController {
             writer = new PrintWriter(response.outputStream)
         }
 
+        sitemapWriter.sitemappers = sitemappers
         sitemapWriter.writeIndexEntries(writer)
 
         writer.flush()
@@ -78,10 +82,16 @@ class SitemapperController {
             writer = new PrintWriter(response.outputStream)
         }
 
+        sitemapWriter.sitemappers = sitemappers
         sitemapWriter.writeSitemapEntries(writer, parseName(name), parseNumber(name))
 
         writer.flush()
         writer.close()
+    }
+
+    @Autowired
+    private void setSitemappers(Set<Sitemapper> newMappers) {
+        this.sitemappers = newMappers
     }
 
     private String parseName(String mapperName) {

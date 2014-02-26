@@ -15,8 +15,7 @@
  */
 package grails.plugins.sitemapper
 
-import org.codehaus.groovy.grails.commons.GrailsApplication
-import org.codehaus.groovy.grails.plugins.support.aware.GrailsApplicationAware
+import grails.util.Holders
 
 /**
  * Default sitemapServerUrl bean.
@@ -25,9 +24,7 @@ import org.codehaus.groovy.grails.plugins.support.aware.GrailsApplicationAware
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver, GrailsApplicationAware {
-
-    GrailsApplication grailsApplication
+class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver {
 
     public String getServerUrl() {
         String serverUrl = getServerUrlFromConfiguration()
@@ -40,10 +37,10 @@ class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver, Grails
     }
 
     protected String getServerUrlFromConfiguration() {
-        def serverUrl = grailsApplication.config?.grails?.serverURL
+        def serverUrl = Holders.config?.grails?.serverURL
 
         if (serverUrl) {
-            return grailsApplication.config?.grails?.serverURL?.toString()
+            return Holders.config?.grails?.serverURL?.toString()
         } else {
             Integer port = System.getProperty('server.port', '8080').toInteger()
             String host = System.getProperty('server.host', 'localhost')
