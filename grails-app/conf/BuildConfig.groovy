@@ -20,7 +20,14 @@ grails.project.dependency.resolution = {
         mavenCentral()
     }
     dependencies {
-//        compile 'org.apache.httpcomponents:httpclient:4.1.1'
+        compile 'org.apache.httpcomponents:httpclient:4.2.5', {
+            excludes 'httpcore', 'commons-logging', 'commons-codec', 'junit', 'mockito-core'
+            export = false
+        }
+        compile 'org.apache.httpcomponents:httpcore:4.2.4', {
+            excludes 'junit', 'mockito-core'
+            export = false
+        }
         test 'org.objenesis:objenesis:1.2', 'cglib:cglib-nodep:2.2'
         test 'org.spockframework:spock-grails-support:0.7-groovy-2.0'
     }
