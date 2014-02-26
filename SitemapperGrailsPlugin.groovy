@@ -42,7 +42,7 @@ class SitemapperGrailsPlugin {
     def authorEmail = 'kim@developer-b.com'
     def description = 'Autogeneration of sitemaps, see sitemaps.org for more information about sitemaps.'
 
-    def documentation = 'https://www.github.com/kimble/grails-sitemapper'
+    def documentation = 'http://grails.org/plugin/sitemapper'
 
     def license = 'APACHE'
     def developers = [
