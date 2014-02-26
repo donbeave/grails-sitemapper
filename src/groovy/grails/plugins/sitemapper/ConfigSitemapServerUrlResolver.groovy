@@ -23,6 +23,7 @@ import org.codehaus.groovy.grails.plugins.support.aware.GrailsApplicationAware
  * Looks up server URL in application configuration (grails.serverURL).
  *
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
+ * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
 class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver, GrailsApplicationAware {
 
@@ -39,11 +40,20 @@ class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver, Grails
     }
 
     protected String getServerUrlFromConfiguration() {
-        grailsApplication.config?.grails?.serverURL?.toString()
+        def serverUrl = grailsApplication.config?.grails?.serverURL
+
+        if (serverUrl) {
+            return grailsApplication.config?.grails?.serverURL?.toString()
+        } else {
+            Integer port = System.getProperty('server.port', '8080').toInteger()
+            String host = System.getProperty('server.host', 'localhost')
+            String portPostfix = port != 80 ? ":${port}" : ''
+            return "http://${host}${portPostfix}"
+        }
     }
 
     protected String removeTrailingSlash(String serverUrl) {
-        serverUrl.endsWith("/") ? serverUrl.substring(0, serverUrl.size() - 1) : serverUrl
+        serverUrl.endsWith('/') ? serverUrl.substring(0, serverUrl.size() - 1) : serverUrl
     }
 
 }

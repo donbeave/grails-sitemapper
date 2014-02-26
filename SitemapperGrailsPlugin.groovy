@@ -17,6 +17,7 @@ import grails.plugins.sitemapper.ConfigSitemapServerUrlResolver
 import grails.plugins.sitemapper.artefact.SitemapperArtefactHandler
 import grails.plugins.sitemapper.impl.SearchEnginePinger
 import grails.plugins.sitemapper.impl.XmlSitemapWriter
+import grails.util.Environment
 import grails.util.Holders
 import org.apache.http.impl.client.DefaultHttpClient
 
@@ -27,7 +28,7 @@ import org.apache.http.impl.client.DefaultHttpClient
 class SitemapperGrailsPlugin {
 
     def version = '0.8-SNAPSHOT'
-    def grailsVersion = '1.3.0 > *'
+    def grailsVersion = '2.0 > *'
     def dependsOn = [:]
     def pluginExcludes = [
             'web-app/css',
@@ -59,6 +60,8 @@ class SitemapperGrailsPlugin {
     ]
 
     def doWithSpring = {
+        loadQuartzConfig(application.config)
+
         application.sitemapperClasses.each { mapperClass ->
             log.debug "Registering sitemapper class ${mapperClass.name} as sitemapper / bean"
             "${mapperClass.name}Sitemapper"(mapperClass.clazz) { bean ->
@@ -98,6 +101,34 @@ class SitemapperGrailsPlugin {
 
             beanDefinitions.registerBeans(event.ctx)
         }
+    }
+
+    private ConfigObject loadQuartzConfig(ConfigObject config) {
+        def classLoader = new GroovyClassLoader(getClass().classLoader)
+        String environment = Environment.current.name
+
+        // Note here the order of objects when calling merge - merge OVERWRITES values in the target object
+        // Load default config as a basis
+        def newConfig = new ConfigSlurper(environment).parse(
+                classLoader.loadClass('DefaultSitemapConfig')
+        )
+
+        // Overwrite defaults with what Config.groovy has supplied, perhaps from external files
+        newConfig.merge(config)
+
+        // Overwrite with contents of QuartzConfig
+        try {
+            newConfig.merge(new ConfigSlurper(environment).parse(
+                    classLoader.loadClass('SitemapConfig'))
+            )
+        } catch (Exception ignored) {
+            // ignore, just use the defaults
+        }
+
+        // Now merge our correctly merged DefaultSitemapConfig and SitemapConfig into the main config
+        config.merge(newConfig)
+
+        return config.sitemap
     }
 
 }

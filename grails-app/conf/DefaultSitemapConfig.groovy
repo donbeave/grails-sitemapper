@@ -13,20 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import grails.util.Holders
-import org.springframework.context.ApplicationContext
-
-/**
- * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
- */
-class SitemapperUrlMappings {
-
-    static mappings = { ApplicationContext context ->
-        def path = Holders.config.sitemap.prefix
-
-        "/${path}.xml"(controller: 'sitemapper', plugin: 'sitemapper')
-        "/${path}.${name}.xml"(controller: 'sitemapper', plugin: 'sitemapper', action: 'source')
-    }
-
+sitemap {
+    prefix = 'sitemap'
 }

@@ -18,6 +18,7 @@ package grails.plugins.sitemapper.impl;
 import grails.plugins.sitemapper.EntryWriter;
 import grails.plugins.sitemapper.SitemapServerUrlResolver;
 import grails.plugins.sitemapper.Sitemapper;
+import grails.util.Holders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +35,12 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
 
     private final static String SITEMAP_OPEN = "<sitemap>";
     private final static String SITEMAP_CLOSE = "</sitemap>\n";
+
+    private static String PATH;
+
+    public XmlSitemapWriter() {
+        PATH = Holders.getConfig().toProperties().getProperty("sitemap.prefix");
+    }
 
     @Override
     public void writeIndexEntries(PrintWriter writer) throws IOException {
@@ -94,9 +101,10 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
         writer.print("</sitemapindex>");
     }
 
-    private void writeIndexExtry(PrintWriter writer, String serverUrl, String mapperName, String lastMod) throws IOException {
+    private void writeIndexExtry(PrintWriter writer, String serverUrl, String mapperName, String lastMod) throws
+            IOException {
         writer.print(SITEMAP_OPEN);
-        writer.print(String.format("<loc>%s/sitemap-%s.xml</loc>", serverUrl, mapperName));
+        writer.print(String.format("<loc>%s/%s.%s.xml</loc>", serverUrl, PATH, mapperName));
         writer.print(String.format("<lastmod>%s</lastmod>", lastMod));
         writer.print(SITEMAP_CLOSE);
     }
