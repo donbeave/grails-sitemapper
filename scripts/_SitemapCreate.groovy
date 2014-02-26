@@ -1,3 +1,5 @@
+import java.util.zip.GZIPOutputStream
+
 /*
  * Copyright 2010 Kim A. Betti, Alexey Zhokhov
  *
@@ -17,15 +19,16 @@
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-defaultDestPath = "target/sitemaps"
+defaultDestPath = 'target/sitemaps'
 
 siteMapCreate = { String destPath = defaultDestPath ->
     ant.mkdir dir: destPath
 
     // loading classes
-    def paginationSitemapperClass = classLoader.loadClass("grails.plugins.sitemapper.impl.PaginationSitemapper", true)
+    def paginationSitemapperClass = classLoader.loadClass('grails.plugins.sitemapper.impl.PaginationSitemapper', true)
 
-    def sitemapWriter = appCtx.getBean("sitemapWriter")
+    def sitemapWriter = appCtx.getBean('sitemapWriter')
+    String extension = sitemapWriter.extension
 
     generateIndexFile(sitemapWriter, destPath)
 
@@ -34,26 +37,39 @@ siteMapCreate = { String destPath = defaultDestPath ->
 
         if (paginationSitemapperClass.isInstance(mapper)) {
             for (int i = 0; i < mapper.pagesCount; i++) {
-                generateUrlSetFile(sitemapWriter, mapper, i, "sitemap-${mapperName}-${i}.xml", destPath)
+                generateUrlSetFile(sitemapWriter, mapper, i, "sitemap.${mapperName}-${i}.${extension}", destPath)
             }
         } else {
-            generateUrlSetFile(sitemapWriter, mapper, 0, "sitemap-${mapperName}.xml", destPath)
+            generateUrlSetFile(sitemapWriter, mapper, 0, "sitemap.${mapperName}.${extension}", destPath)
         }
     }
+
+    println 'All sitemaps generated.'
 }
 
 generateIndexFile = { sitemapWriter, String destPath = defaultDestPath ->
-    ant.echo "Generating sitemap index file ..."
+    println 'Generating sitemap index file ...'
 
-    def indexWriter = new PrintWriter(new File("${destPath}/sitemap.xml"))
+    def indexWriter = getWriter("${destPath}/sitemap.${sitemapWriter.extension}")
     sitemapWriter.writeIndexEntries(indexWriter)
     indexWriter.flush()
+    indexWriter.close();
 }
 
 generateUrlSetFile = { sitemapWriter, mapper, part, fileName, String destPath = defaultDestPath ->
-    ant.echo "Generating ${fileName} ..."
+    println "Generating ${fileName} ..."
 
-    PrintWriter urlsetWriter = new PrintWriter(new File("${destPath}/${fileName}"))
+    PrintWriter urlsetWriter = getWriter("${destPath}/${fileName}")
     sitemapWriter.writeSitemapEntries(urlsetWriter, mapper, part);
     urlsetWriter.flush()
+    urlsetWriter.close();
+}
+
+public PrintWriter getWriter(String path) throws Exception {
+    if (path.contains('xml.gz')) {
+        GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(new File(path)));
+        return new PrintWriter(out)
+    } else {
+        return new PrintWriter(new File(path))
+    }
 }

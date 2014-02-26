@@ -24,7 +24,7 @@ class SitemapperUrlMappings {
 
     static mappings = { ApplicationContext context ->
         def path = Holders.config.sitemap.prefix
-        String extension = Holders.config.sitemap.gzip ? 'xml.gz' : 'xml'
+        String extension = context.getBean('sitemapWriter').extension
 
         "/${path}.${extension}"(controller: 'sitemapper', plugin: 'sitemapper')
         "/${path}.${name}.${extension}"(controller: 'sitemapper', plugin: 'sitemapper', action: 'source')

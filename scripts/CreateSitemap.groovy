@@ -42,9 +42,9 @@ target('default': 'Creates a new sitemap') {
 }
 
 USAGE = """
-    create-controller [NAME]
+    create-sitemap [NAME]
 
 where
-    NAME       = The name of the controller. If not provided, this
+    NAME       = The name of the sitemap. If not provided, this
                  command will ask you for the name.
 """

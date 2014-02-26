@@ -37,14 +37,14 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     private final static String SITEMAP_OPEN = "<sitemap>";
     private final static String SITEMAP_CLOSE = "</sitemap>\n";
 
-    private static String PATH;
-    private static String EXTENSION;
+    public String path;
+    public String extension;
 
     public XmlSitemapWriter() {
         Properties properties = Holders.getConfig().toProperties();
 
-        PATH = properties.getProperty("sitemap.prefix");
-        EXTENSION = properties.getProperty("sitemap.gzip").equals("true") ? "xml.gz" : "xml";
+        path = properties.getProperty("sitemap.prefix");
+        extension = properties.getProperty("sitemap.gzip").equals("true") ? "xml.gz" : "xml";
     }
 
     @Override
@@ -109,7 +109,7 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     private void writeIndexExtry(PrintWriter writer, String serverUrl, String mapperName, String lastMod) throws
             IOException {
         writer.print(SITEMAP_OPEN);
-        writer.print(String.format("<loc>%s/%s.%s.%s</loc>", serverUrl, PATH, mapperName, EXTENSION));
+        writer.print(String.format("<loc>%s/%s.%s.%s</loc>", serverUrl, path, mapperName, extension));
         writer.print(String.format("<lastmod>%s</lastmod>", lastMod));
         writer.print(SITEMAP_CLOSE);
     }
