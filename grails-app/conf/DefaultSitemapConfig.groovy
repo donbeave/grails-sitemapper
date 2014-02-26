@@ -15,4 +15,5 @@
  */
 sitemap {
     prefix = 'sitemap'
+    gzip = true
 }

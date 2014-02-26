@@ -15,10 +15,10 @@
  */
 package grails.plugins.sitemapper
 
-import grails.plugins.sitemapper.impl.XmlSitemapWriter
 import org.springframework.util.Assert
 
-import javax.servlet.ServletOutputStream
+import javax.servlet.http.HttpServletResponse
+import java.util.zip.GZIPOutputStream
 
 /**
  * Generates sitemaps on the fly. The XML output is piped directly to 
@@ -31,7 +31,12 @@ import javax.servlet.ServletOutputStream
  */
 class SitemapperController {
 
-    XmlSitemapWriter sitemapWriter
+    static PrintWriter getGzipWriter(HttpServletResponse response) throws IOException {
+        return new PrintWriter(new GZIPOutputStream(response.outputStream))
+    }
+
+    def grailsApplication
+    def sitemapWriter
 
     /**
      *  The index sitemap
@@ -39,15 +44,21 @@ class SitemapperController {
      *  Contains uri's to each sitemapper sitemap
      *  + a time stamp indicating the last update.
      */
-    def index = {
-        response.contentType = "application/xml"
+    def index() {
+        PrintWriter writer
 
-        ServletOutputStream out = response.outputStream
-        PrintWriter writer = new PrintWriter(out)
+        if (grailsApplication.config.sitemap.gzip) {
+            writer = getGzipWriter(response)
+        } else {
+            response.contentType = 'application/xml'
+
+            writer = new PrintWriter(response.outputStream)
+        }
 
         sitemapWriter.writeIndexEntries(writer)
 
         writer.flush()
+        writer.close()
     }
 
     /**
@@ -56,15 +67,21 @@ class SitemapperController {
      * Each sitemapper implementation will have its own sitemap file.
      * The entries in this file is populated by calling the mapper.
      */
-    def source = {
-        response.contentType = "application/xml"
+    def source(String name) {
+        PrintWriter writer
 
-        ServletOutputStream out = response.outputStream
-        PrintWriter writer = new PrintWriter(out)
+        if (grailsApplication.config.sitemap.gzip) {
+            writer = getGzipWriter(response)
+        } else {
+            response.contentType = 'application/xml'
 
-        sitemapWriter.writeSitemapEntries(writer, parseName(params.name), parseNumber(params.name))
+            writer = new PrintWriter(response.outputStream)
+        }
+
+        sitemapWriter.writeSitemapEntries(writer, parseName(name), parseNumber(name))
 
         writer.flush()
+        writer.close()
     }
 
     private String parseName(String mapperName) {

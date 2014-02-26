@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
@@ -37,9 +38,13 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     private final static String SITEMAP_CLOSE = "</sitemap>\n";
 
     private static String PATH;
+    private static String EXTENSION;
 
     public XmlSitemapWriter() {
-        PATH = Holders.getConfig().toProperties().getProperty("sitemap.prefix");
+        Properties properties = Holders.getConfig().toProperties();
+
+        PATH = properties.getProperty("sitemap.prefix");
+        EXTENSION = properties.getProperty("sitemap.gzip").equals("true") ? "xml.gz" : "xml";
     }
 
     @Override
@@ -104,7 +109,7 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     private void writeIndexExtry(PrintWriter writer, String serverUrl, String mapperName, String lastMod) throws
             IOException {
         writer.print(SITEMAP_OPEN);
-        writer.print(String.format("<loc>%s/%s.%s.xml</loc>", serverUrl, PATH, mapperName));
+        writer.print(String.format("<loc>%s/%s.%s.%s</loc>", serverUrl, PATH, mapperName, EXTENSION));
         writer.print(String.format("<lastmod>%s</lastmod>", lastMod));
         writer.print(SITEMAP_CLOSE);
     }

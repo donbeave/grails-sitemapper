@@ -24,9 +24,10 @@ class SitemapperUrlMappings {
 
     static mappings = { ApplicationContext context ->
         def path = Holders.config.sitemap.prefix
+        String extension = Holders.config.sitemap.gzip ? 'xml.gz' : 'xml'
 
-        "/${path}.xml"(controller: 'sitemapper', plugin: 'sitemapper')
-        "/${path}.${name}.xml"(controller: 'sitemapper', plugin: 'sitemapper', action: 'source')
+        "/${path}.${extension}"(controller: 'sitemapper', plugin: 'sitemapper')
+        "/${path}.${name}.${extension}"(controller: 'sitemapper', plugin: 'sitemapper', action: 'source')
     }
 
 }
