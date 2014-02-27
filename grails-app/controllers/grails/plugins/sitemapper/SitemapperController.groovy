@@ -51,6 +51,8 @@ class SitemapperController {
         PrintWriter writer
 
         if (grailsApplication.config.sitemap.gzip) {
+            response.contentType = 'application/gzip'
+
             writer = getGzipWriter(response)
         } else {
             response.contentType = 'application/xml'
@@ -75,6 +77,8 @@ class SitemapperController {
         PrintWriter writer
 
         if (grailsApplication.config.sitemap.gzip) {
+            response.contentType = 'application/gzip'
+
             writer = getGzipWriter(response)
         } else {
             response.contentType = 'application/xml'
