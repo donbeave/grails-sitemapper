@@ -130,7 +130,7 @@ environments {
 Static files generation
 -----------------------
 
-Suggested use this plugin with proxy servers like [nginx](http://nginx.org/) or [Apache HTTP Server](http://httpd.apache.org/) and use caching functional.
+Suggest use this plugin under proxy servers like [nginx](http://nginx.org/) or [Apache HTTP Server](http://httpd.apache.org/) with enabled caching.
 
 Anyway, plugin also support to generate static files by script:
 
