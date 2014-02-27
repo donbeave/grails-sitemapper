@@ -15,5 +15,11 @@
  */
 sitemap {
     prefix = 'sitemap'
-    gzip = true
+    gzip = false
+}
+
+environments {
+    production {
+        sitemap.gzip = true
+    }
 }
