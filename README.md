@@ -109,17 +109,17 @@ Config
 To change sitemap filename (only filename, exclude extension), you can set the following in `Config.groovy`:
 
 ```groovy
-    sitemap.prefix = 'mysitemap'
+sitemap.prefix = 'mysitemap'
 ```
 
 To disable gzip on production mode:
 
 ```groovy
-    environments {
-        production {
-            sitemap.gzip = false
-        }
+environments {
+    production {
+        sitemap.gzip = false
     }
+}
 ```
     
 Static files generation
