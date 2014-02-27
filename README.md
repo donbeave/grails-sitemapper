@@ -18,11 +18,11 @@ Installation
 In `BuildConfig.groovy`, add the dependency to "plugins" section:
 
 ```groovy
-    plugins {
-        //...
-        compile ':sitemapper:0.8'
-        //...
-    }
+plugins {
+    //...
+    compile ':sitemapper:0.8'
+    //...
+}
 ```
 
 Change the version to reflect the actual version you would like to use.
@@ -80,14 +80,19 @@ class MessagesSitemapper extends PaginationSitemapper {
         Message.count()
     }
         
-	@Override
-	public void withEntryWriter(EntryWriter entryWriter) {
-	    def items = Message.list([max: perPageCount, offset: pageIndex * perPageCount, sort: 'createdDate', order: 'asc'])
+    @Override
+    public void withEntryWriter(EntryWriter entryWriter) {
+        def items = Message.list([
+	        max: perPageCount, 
+	        offset: pageIndex * perPageCount, 
+	        sort: 'createdDate', 
+	        order: 'asc'
+	])
     	    
         items.each {
             entryWriter.addEntry("/messages/${it.id}", it.createdDate)
         }
-	}
+    }
     	
 }
 ```
@@ -144,7 +149,6 @@ Add something like this to your `Config.groovy` file. The %s will be substituted
     }
 
 Important! This has not yet been fully implemented. 
-
 
 Roadmap
 -------
