@@ -12,7 +12,7 @@ class @artifact.name@ extends PaginationSitemapper {
 
     @Override
     public void withEntryWriter(EntryWriter entryWriter) {
-        switch (pageNumber) {
+        switch (pageIndex) {
             case 0:
                 1.times { n ->
                     entryWriter.addEntry "/test/${n}", new Date() - 1

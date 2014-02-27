@@ -31,7 +31,7 @@ class ArticlesSitemapper extends PaginationSitemapper {
 
     @Override
     public void withEntryWriter(EntryWriter entryWriter) {
-        switch (pageNumber) {
+        switch (pageIndex) {
             case 0:
                 1.times { n ->
                     entryWriter.addEntry "/articles/${n}", new Date() - 1

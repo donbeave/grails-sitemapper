@@ -22,14 +22,14 @@ import grails.plugins.sitemapper.Sitemapper;
  */
 public abstract class PaginationSitemapper implements Sitemapper {
 
-    private Integer pageNumber;
+    private Integer pageIndex;
 
     public abstract Integer getPerPageCount();
 
     public abstract Long getTotalCount();
 
-    public Integer getPageNumber() {
-        return pageNumber;
+    public Integer getPageIndex() {
+        return pageIndex;
     }
 
     public Integer getPagesCount() {
@@ -37,11 +37,11 @@ public abstract class PaginationSitemapper implements Sitemapper {
     }
 
     public Integer getOffset() {
-        return pageNumber * getPerPageCount();
+        return pageIndex * getPerPageCount();
     }
 
-    protected void setPageNumber(Integer pageNumber) {
-        this.pageNumber = pageNumber;
+    protected void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
     }
 
 }

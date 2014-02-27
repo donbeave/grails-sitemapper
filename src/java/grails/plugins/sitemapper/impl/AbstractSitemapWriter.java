@@ -49,7 +49,7 @@ public abstract class AbstractSitemapWriter {
     public void writeSitemapEntries(PrintWriter writer, Sitemapper sitemapper, Integer pageNumber)
             throws IOException {
         if (sitemapper instanceof PaginationSitemapper) {
-            ((PaginationSitemapper) sitemapper).setPageNumber(pageNumber);
+            ((PaginationSitemapper) sitemapper).setPageIndex(pageNumber);
         }
 
         writeSitemapEntries(writer, sitemapper);
