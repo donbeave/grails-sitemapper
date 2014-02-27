@@ -1,7 +1,11 @@
-Sitemapper for Grails applications
-==================================
+grails-sitemapper
+=================
 
-Create sitemaps on the fly. 
+Grails Sitemaps plugin
+
+Summary
+-------
+Create sitemaps on the fly. Easy add support for dynamic or static sitemaps for you site.
 
 About sitemaps
 --------------
@@ -147,3 +151,8 @@ Roadmap
 
  1. Implement support for search engine ping - in (slow) progress.
  2. Support for Grails Cache plugin.
+
+Copyright and license
+---------------------
+
+Copyright 2010-2014 Kim A. Betti, Alexey Zhokhov under the [Apache License, Version 2.0](LICENSE).
