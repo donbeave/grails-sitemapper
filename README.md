@@ -27,9 +27,11 @@ Quick Start
 -----------
 
 Create sitemap generator class by 
-    grails create-sitemap
-
-    > Add pagination support? [y,n] 
+    
+```
+grails create-sitemap
+> Add pagination support? [y,n] 
+```
 
 Select "y" if you exceed established limits (like 50 000 URLS per file) in one sitemap group.
 
