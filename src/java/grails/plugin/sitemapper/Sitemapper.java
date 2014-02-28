@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo
+package grails.plugin.sitemapper;
 
-import grails.plugin.sitemapper.EntryWriter
-import grails.plugin.sitemapper.Sitemapper
+import java.util.Date;
 
 /**
+ * Sitemapper artefacts have to implement this interface.
+ *
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
+public interface Sitemapper {
 
-class ForumSitemapper implements Sitemapper {
+    Date getPreviousUpdate();
 
-    Date previousUpdate = new Date()
-
-    @Override
-    public void withEntryWriter(EntryWriter entryWriter) {
-        entryWriter.addEntry "/forum/entry/test", new Date() - 1
-        entryWriter.addEntry "/forum/entry/test-2", new Date(), MONTHLY, 0.5
-    }
+    void withEntryWriter(EntryWriter entryWriter);
 
 }

@@ -44,9 +44,9 @@ Then script screate sample artefacts in `grails-app/sitemaps` folder,
 Standard sitemap (single file):
 
 ```groovy
-import grails.plugins.sitemapper.Sitemapper
+import grails.plugin.sitemapper.Sitemapper
     
-import static grails.plugins.sitemapper.ContentChangeFrequency.MONTHLY
+import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
 
 class ForumSitemapper implements Sitemapper {
         
@@ -66,8 +66,8 @@ class ForumSitemapper implements Sitemapper {
 Sitemaps group (multiple files):
 
 ```groovy
-import grails.plugins.sitemapper.EntryWriter
-import grails.plugins.sitemapper.impl.PaginationSitemapper
+import grails.plugin.sitemapper.EntryWriter
+import grails.plugin.sitemapper.impl.PaginationSitemapper
 
 class MessagesSitemapper extends PaginationSitemapper {
         

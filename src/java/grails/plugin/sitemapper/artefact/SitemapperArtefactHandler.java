@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo
+package grails.plugin.sitemapper.artefact;
 
-import grails.plugin.sitemapper.EntryWriter
-import grails.plugin.sitemapper.Sitemapper
+import org.codehaus.groovy.grails.commons.ArtefactHandlerAdapter;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
+public class SitemapperArtefactHandler extends ArtefactHandlerAdapter {
 
-class ForumSitemapper implements Sitemapper {
+    static public final String TYPE = "Sitemapper";
+    static public final String SUFFIX = "Sitemapper";
 
-    Date previousUpdate = new Date()
-
-    @Override
-    public void withEntryWriter(EntryWriter entryWriter) {
-        entryWriter.addEntry "/forum/entry/test", new Date() - 1
-        entryWriter.addEntry "/forum/entry/test-2", new Date(), MONTHLY, 0.5
+    public SitemapperArtefactHandler() {
+        super(TYPE, SitemapperClass.class, DefaultSitemapperClass.class, SUFFIX);
     }
 
 }

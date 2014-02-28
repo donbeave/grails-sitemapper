@@ -15,9 +15,9 @@
  */
 package demo
 
-import grails.plugins.sitemapper.ContentChangeFrequency
-import grails.plugins.sitemapper.EntryWriter
-import grails.plugins.sitemapper.impl.PaginationSitemapper
+import grails.plugin.sitemapper.ContentChangeFrequency
+import grails.plugin.sitemapper.EntryWriter
+import grails.plugin.sitemapper.impl.PaginationSitemapper
 
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>

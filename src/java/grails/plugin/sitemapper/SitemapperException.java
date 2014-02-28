@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo
-
-import grails.plugin.sitemapper.EntryWriter
-import grails.plugin.sitemapper.Sitemapper
+package grails.plugin.sitemapper;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
+@SuppressWarnings("serial")
+public class SitemapperException extends RuntimeException {
 
-class ForumSitemapper implements Sitemapper {
+    public SitemapperException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    Date previousUpdate = new Date()
+    public SitemapperException(String message) {
+        super(message);
+    }
 
-    @Override
-    public void withEntryWriter(EntryWriter entryWriter) {
-        entryWriter.addEntry "/forum/entry/test", new Date() - 1
-        entryWriter.addEntry "/forum/entry/test-2", new Date(), MONTHLY, 0.5
+    public SitemapperException(Throwable cause) {
+        super(cause);
     }
 
 }

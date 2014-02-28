@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import grails.plugins.sitemapper.ConfigSitemapServerUrlResolver
-import grails.plugins.sitemapper.artefact.SitemapperArtefactHandler
-import grails.plugins.sitemapper.impl.SearchEnginePinger
-import grails.plugins.sitemapper.impl.XmlSitemapWriter
+import grails.plugin.sitemapper.ConfigSitemapServerUrlResolver
+import grails.plugin.sitemapper.artefact.SitemapperArtefactHandler
+import grails.plugin.sitemapper.impl.SearchEnginePinger
+import grails.plugin.sitemapper.impl.XmlSitemapWriter
 import grails.util.Environment
 import grails.util.Holders
 import org.apache.http.impl.client.DefaultHttpClient

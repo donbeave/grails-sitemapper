@@ -13,25 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo
+package grails.plugin.sitemapper.impl;
 
-import grails.plugin.sitemapper.EntryWriter
-import grails.plugin.sitemapper.Sitemapper
+import grails.plugin.sitemapper.Sitemapper;
 
 /**
- * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
+public abstract class PaginationSitemapper implements Sitemapper {
 
-class ForumSitemapper implements Sitemapper {
+    private Integer pageIndex;
 
-    Date previousUpdate = new Date()
+    public abstract Integer getPerPageCount();
 
-    @Override
-    public void withEntryWriter(EntryWriter entryWriter) {
-        entryWriter.addEntry "/forum/entry/test", new Date() - 1
-        entryWriter.addEntry "/forum/entry/test-2", new Date(), MONTHLY, 0.5
+    public abstract Long getTotalCount();
+
+    public Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public Integer getPagesCount() {
+        return (int) Math.ceil((double) getTotalCount() / getPerPageCount());
+    }
+
+    public Integer getOffset() {
+        return pageIndex * getPerPageCount();
+    }
+
+    protected void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
     }
 
 }

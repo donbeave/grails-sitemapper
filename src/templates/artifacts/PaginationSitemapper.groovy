@@ -1,7 +1,7 @@
-@artifact.package@import grails.plugins.sitemapper.EntryWriter
-import grails.plugins.sitemapper.impl.PaginationSitemapper
+@artifact.package@import grails.plugin.sitemapper.EntryWriter
+import grails.plugin.sitemapper.impl.PaginationSitemapper
 
-import static grails.plugins.sitemapper.ContentChangeFrequency.MONTHLY
+import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
 
 class @artifact.name@ extends PaginationSitemapper {
 

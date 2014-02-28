@@ -1,7 +1,7 @@
-@artifact.package@import grails.plugins.sitemapper.EntryWriter
-import grails.plugins.sitemapper.Sitemapper
+@artifact.package@import grails.plugin.sitemapper.EntryWriter
+import grails.plugin.sitemapper.Sitemapper
 
-import static grails.plugins.sitemapper.ContentChangeFrequency.MONTHLY
+import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
 
 class @artifact.name@ implements Sitemapper {
 

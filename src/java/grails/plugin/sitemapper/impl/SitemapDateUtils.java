@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package demo
+package grails.plugin.sitemapper.impl;
 
-import grails.plugin.sitemapper.EntryWriter
-import grails.plugin.sitemapper.Sitemapper
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
+ * SimpleDateFormat is not thread-safe, neither is this class.
+ *
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
+public class SitemapDateUtils {
 
-class ForumSitemapper implements Sitemapper {
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
 
-    Date previousUpdate = new Date()
-
-    @Override
-    public void withEntryWriter(EntryWriter entryWriter) {
-        entryWriter.addEntry "/forum/entry/test", new Date() - 1
-        entryWriter.addEntry "/forum/entry/test-2", new Date(), MONTHLY, 0.5
+    public String formatForSitemap(final Date date) {
+        final String formatted = dateFormat.format(date);
+        final String postfix = formatted.substring(formatted.length() - 2); // Hack for timezone format
+        return formatted.substring(0, formatted.length() - 2) + ":" + postfix;
     }
 
 }
