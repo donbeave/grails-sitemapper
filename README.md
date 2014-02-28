@@ -83,11 +83,11 @@ class MessagesSitemapper extends PaginationSitemapper {
     @Override
     public void withEntryWriter(EntryWriter entryWriter) {
         def items = Message.list([
-	        max: perPageCount, 
-	        offset: pageIndex * perPageCount, 
-	        sort: 'createdDate', 
-	        order: 'asc'
-	])
+                max: perPageCount, 
+                offset: pageIndex * perPageCount, 
+                sort: 'createdDate', 
+                order: 'asc'
+        ])
     	    
         items.each {
             entryWriter.addEntry("/messages/${it.id}", it.createdDate)
