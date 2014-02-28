@@ -39,7 +39,7 @@ grails create-sitemap
 
 Select "y" if you exceed established limits (like 50 000 URLS per file) in one sitemap group.
 
-Then script screate sample artefacts in `grails-app/sitemaps` folder,
+Then script create sample artefact in `grails-app/sitemaps` folder,
 
 Standard sitemap (single file):
 
