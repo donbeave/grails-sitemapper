@@ -93,7 +93,7 @@ class SitemapperController {
         writer.close()
     }
 
-    @Autowired
+    @Autowired(required = false)
     private void setSitemappers(Set<Sitemapper> newMappers) {
         this.sitemappers = newMappers
     }
