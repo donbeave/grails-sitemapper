@@ -159,4 +159,7 @@ Roadmap
 Copyright and license
 ---------------------
 
-Copyright 2010-2014 Kim A. Betti, Alexey Zhokhov under the [Apache License, Version 2.0](LICENSE).
+Copyright 2010-2014 Kim A. Betti, Alexey Zhokhov under the [Apache License, Version 2.0](LICENSE). Supported by [Polusharie][polusharie].
+
+[polusharie]: http://www.polusharie.com
+
