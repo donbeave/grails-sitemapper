@@ -49,6 +49,8 @@ class SitemapperGrailsPlugin {
     def developers = [
             [name: 'Kim A. Betti', email: 'kim@developer-b.com'],
             [name: 'Alexey Zhokhov', email: 'donbeave@gmail.com']]
+    def organization = [name: 'Polusharie', url: 'http://www.polusharie.com']
+
     def issueManagement = [system: 'GITHUB', url: 'https://github.com/donbeave/grails-sitemapper/issues']
     def scm = [url: 'https://github.com/donbeave/grails-sitemapper/']
 
