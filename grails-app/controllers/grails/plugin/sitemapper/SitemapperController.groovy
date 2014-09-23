@@ -15,16 +15,17 @@
  */
 package grails.plugin.sitemapper
 
+import java.util.zip.GZIPOutputStream
+
+import javax.servlet.http.HttpServletResponse
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.Assert
 
-import javax.servlet.http.HttpServletResponse
-import java.util.zip.GZIPOutputStream
-
 /**
- * Generates sitemaps on the fly. The XML output is piped directly to 
- * response.output to avoid unnecessary object generation and memory usage. 
- * The drawback is that exceptions can stop the sitemap generation 
+ * Generates sitemaps on the fly. The XML output is piped directly to
+ * response.output to avoid unnecessary object generation and memory usage.
+ * The drawback is that exceptions can stop the sitemap generation
  * "mid stream" so test your sitemappers.
  *
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
@@ -36,7 +37,6 @@ class SitemapperController {
         return new PrintWriter(new GZIPOutputStream(response.outputStream))
     }
 
-    def grailsApplication
     def sitemapWriter
 
     private Set<Sitemapper> sitemappers
@@ -104,13 +104,13 @@ class SitemapperController {
         if (mapperName.contains('-')) {
             int dashIndex = mapperName.indexOf('-')
             return mapperName.substring(0, dashIndex)
-        } else {
-            int dotIndex = mapperName.indexOf('.')
-            return dotIndex > 0 ? mapperName.substring(0, dotIndex) : mapperName
         }
+
+        int dotIndex = mapperName.indexOf('.')
+        return dotIndex > 0 ? mapperName.substring(0, dotIndex) : mapperName
     }
 
-    private Integer parseNumber(String mapperName) {
+    private int parseNumber(String mapperName) {
         Assert.hasLength(mapperName)
 
         if (mapperName.contains('-')) {
@@ -122,5 +122,4 @@ class SitemapperController {
 
         return 0;
     }
-
 }

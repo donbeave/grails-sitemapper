@@ -26,7 +26,7 @@ import org.codehaus.groovy.grails.cli.CommandLineHelper
 includeTargets << grailsScript('_GrailsInit')
 includeTargets << grailsScript('_GrailsCreateArtifacts')
 
-target('default': 'Creates a new sitemap') {
+target(createSitemap: 'Creates a new sitemap') {
     depends(checkVersion, parseArguments)
 
     def inputHelper = new CommandLineHelper()
@@ -48,3 +48,5 @@ where
     NAME       = The name of the sitemap. If not provided, this
                  command will ask you for the name.
 """
+
+setDefaultTarget(createSitemap)

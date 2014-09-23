@@ -5,7 +5,7 @@ Grails Sitemaps plugin
 
 Summary
 -------
-Create sitemaps on the fly. Easy add support for dynamic or static sitemaps for you site.
+Create sitemaps on the fly. Easily adds support for dynamic or static sitemaps for your site.
 
 About sitemaps
 --------------
@@ -52,9 +52,8 @@ class ForumSitemapper implements Sitemapper {
         
     Date previousUpdate = new Date()
         
-    @Override
     // The `withEntryWriter` method will be invoked each time the sitemap is requested.
-    public void withEntryWriter(EntryWriter entryWriter) {
+    void withEntryWriter(EntryWriter entryWriter) {
         entryWriter.addEntry '/forum/topic1', new Date() - 1
         entryWriter.addEntry '/forum/topic2', new Date(), MONTHLY, 0.5
         // ...
@@ -73,15 +72,15 @@ class MessagesSitemapper extends PaginationSitemapper {
         
     Date previousUpdate = new Date()
 
-    final Integer perPageCount = 50000
+    final int perPageCount = 50000
 
     @Override
-    public Long getTotalCount() {
+    long getTotalCount() {
         Message.count()
     }
         
     @Override
-    public void withEntryWriter(EntryWriter entryWriter) {
+    void withEntryWriter(EntryWriter entryWriter) {
         def items = Message.list([
                 max: perPageCount, 
                 offset: pageIndex * perPageCount, 

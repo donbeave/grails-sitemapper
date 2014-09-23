@@ -18,19 +18,20 @@ package grails.plugin.sitemapper.impl;
 import grails.plugin.sitemapper.ContentChangeFrequency;
 import grails.plugin.sitemapper.EntryWriter;
 import grails.plugin.sitemapper.SitemapperException;
-import org.apache.commons.lang.StringEscapeUtils;
 
 import java.io.IOException;
 import java.util.Date;
+
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * Responsible for printing sitemap entries as XML to output stream.
  *
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
-final class XmlEntryWriter implements EntryWriter {
+public final class XmlEntryWriter implements EntryWriter {
 
-    private final SitemapDateUtils dateUtils;
+    private final SitemapDateUtils dateUtils = new SitemapDateUtils();
     private final Appendable output;
     private final String serverUrl;
 
@@ -43,7 +44,6 @@ final class XmlEntryWriter implements EntryWriter {
     public final static String PRIORITY_TAG = "priority";
 
     public XmlEntryWriter(Appendable output, String serverUrl) {
-        this.dateUtils = new SitemapDateUtils();
         this.serverUrl = serverUrl;
         this.output = output;
     }
@@ -87,7 +87,7 @@ final class XmlEntryWriter implements EntryWriter {
             throw new SitemapperException("Priority has to be between 0 and 1, not " + priority);
         }
 
-        printTag(PRIORITY_TAG, priority + "");
+        printTag(PRIORITY_TAG, String.valueOf(priority));
     }
 
     protected void printTag(final String tagName, final String value) throws IOException {

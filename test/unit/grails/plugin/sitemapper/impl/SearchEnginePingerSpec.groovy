@@ -1,13 +1,16 @@
 package grails.plugin.sitemapper.impl
 
-import grails.plugin.spock.UnitSpec
 import grails.plugin.sitemapper.SitemapServerUrlResolver
+import grails.test.mixin.TestMixin
+import grails.test.mixin.support.GrailsUnitTestMixin
 import org.apache.http.client.HttpClient
+import spock.lang.Specification
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
-class SearchEnginePingerSpec extends UnitSpec {
+@TestMixin(GrailsUnitTestMixin)
+class SearchEnginePingerSpec extends Specification {
 
     def "Ping all works as expected"() {
 

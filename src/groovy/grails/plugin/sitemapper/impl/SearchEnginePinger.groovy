@@ -16,6 +16,7 @@
 package grails.plugin.sitemapper.impl
 
 import grails.plugin.sitemapper.SitemapServerUrlResolver
+
 import org.apache.commons.logging.LogFactory
 import org.apache.http.HttpResponse
 import org.apache.http.client.ClientProtocolException
@@ -34,7 +35,7 @@ class SearchEnginePinger implements InitializingBean {
     private final static log = LogFactory.getLog(this)
 
     SitemapServerUrlResolver sitemapServerUrlResolver
-    Integer pingTimeoutInSeconds = 8
+    int pingTimeoutInSeconds = 8
 
     HttpClient httpClient
     HttpParams httpParams
@@ -42,7 +43,7 @@ class SearchEnginePinger implements InitializingBean {
     // Search engine name => url format with %s for sitemap
     Map<String, String> searchEnginePingUrls = [:]
 
-    public boolean pingAll() {
+    boolean pingAll() {
         boolean allSuccess = true
         String sitemapUrl = sitemapServerUrlResolver.serverUrl + "/sitemap.xml"
         searchEnginePingUrls.each { name, urlFormat ->
@@ -63,37 +64,33 @@ class SearchEnginePinger implements InitializingBean {
             HttpResponse response = httpClient.execute(httpGet)
             log.info "Pinged $engineName"
             return true
-        } catch (HttpResponseException hex) {
+        } catch (HttpResponseException e) {
             log.warn("Unable to ping $engineName. Http response exception, "
-                    + "${hex.statusCode}, message: ${hex.message}", hex)
-        } catch (IOException ex) {
-            log.warn "Unable to ping $engineName, io-ex: " + ex.message, ex
-        } catch (ClientProtocolException cex) {
-            log.warn "Unable to ping $engineName, client-protocol-ex: " + ex.message, ex
-        } catch (Exception ex) {
-            log.error "Unable to ping $engineName, ex: " + ex.message, ex
+                    + "$e.statusCode, message: $e.message", e)
+        } catch (IOException e) {
+            log.warn "Unable to ping $engineName, e: " + e.message, e
+        } catch (ClientProtocolException e) {
+            log.warn "Unable to ping $engineName, client-protocol-ex: " + e.message, e
+        } catch (Exception e) {
+            log.error "Unable to ping $engineName, e: " + e.message, e
         }
 
         return false
     }
 
-    public void afterPropertiesSet() {
-        initializeHttpParams();
-    }
-
-    private void initializeHttpParams() {
+    void afterPropertiesSet() {
         httpParams = httpClient.getParams()
         HttpConnectionParams.setConnectionTimeout(httpParams, pingTimeoutInSeconds * 1000)
         HttpConnectionParams.setSoTimeout(httpParams, pingTimeoutInSeconds * 1000);
     }
 
-    public void setSearchEnginePingUrls(Map<String, String> urls) {
+    void setSearchEnginePingUrls(Map<String, String> urls) {
         urls.each { name, urlFormat ->
             addSearchEnginePingUrl(name, urlFormat)
         }
     }
 
-    public void addSearchEnginePingUrl(String engineName, String urlFormat) {
+    void addSearchEnginePingUrl(String engineName, String urlFormat) {
         log.debug "Adding ping url for $engineName -> $urlFormat"
         searchEnginePingUrls[engineName] = urlFormat
     }

@@ -18,19 +18,22 @@ package grails.plugin.sitemapper.impl;
 import grails.plugin.sitemapper.EntryWriter;
 import grails.plugin.sitemapper.SitemapServerUrlResolver;
 import grails.plugin.sitemapper.Sitemapper;
-import grails.util.Holders;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
+
+import org.codehaus.groovy.grails.commons.GrailsApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
-public class XmlSitemapWriter extends AbstractSitemapWriter {
+public class XmlSitemapWriter extends AbstractSitemapWriter implements InitializingBean {
 
     private final static Logger log = LoggerFactory.getLogger(XmlSitemapWriter.class);
 
@@ -40,8 +43,14 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     public String path;
     public String extension;
 
-    public XmlSitemapWriter() {
-        Properties properties = Holders.getConfig().toProperties();
+    private GrailsApplication grailsApplication;
+
+    public void setGrailsApplication(GrailsApplication app) {
+        grailsApplication = app;
+    }
+
+    public void afterPropertiesSet() {
+        Properties properties = grailsApplication.getConfig().toProperties();
 
         path = properties.getProperty("sitemap.prefix");
         extension = properties.getProperty("sitemap.gzip").equals("true") ? "xml.gz" : "xml";
@@ -53,27 +62,29 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
 
         SitemapDateUtils dateUtils = new SitemapDateUtils();
 
-        for (String mapperName : sitemappers.keySet()) {
-            Sitemapper mapper = sitemappers.get(mapperName);
+        for (Map.Entry<String, Sitemapper> entry : sitemappers.entrySet()) {
+            Sitemapper mapper = entry.getValue();
+            String mapperName = entry.getKey();
 
             String serverUrl = getServerUrl(mapper);
 
             Date previousUpdate = mapper.getPreviousUpdate();
 
-            if (previousUpdate != null) {
-                String lastMod = dateUtils.formatForSitemap(previousUpdate);
+            if (previousUpdate == null) {
+                log.debug("No entries found for {}", mapperName);
+                continue;
+            }
 
-                if (mapper instanceof PaginationSitemapper) {
-                    PaginationSitemapper paginationMapper = (PaginationSitemapper) mapper;
-                    int count = paginationMapper.getPagesCount();
-                    for (int i = 0; i < count; i++) {
-                        writeIndexExtry(writer, serverUrl, mapperName + "-" + i, lastMod);
-                    }
-                } else {
-                    writeIndexExtry(writer, serverUrl, mapperName, lastMod);
+            String lastMod = dateUtils.formatForSitemap(previousUpdate);
+
+            if (mapper instanceof PaginationSitemapper) {
+                PaginationSitemapper paginationMapper = (PaginationSitemapper) mapper;
+                int count = paginationMapper.getPagesCount();
+                for (int i = 0; i < count; i++) {
+                    writeIndexExtry(writer, serverUrl, mapperName + "-" + i, lastMod);
                 }
             } else {
-                log.debug("No entries found for " + mapperName);
+                writeIndexExtry(writer, serverUrl, mapperName, lastMod);
             }
         }
 
@@ -81,7 +92,7 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     }
 
     @Override
-    public void writeSitemapEntries(PrintWriter writer, Sitemapper sitemapper, Integer pageNumber) throws IOException {
+    public void writeSitemapEntries(PrintWriter writer, Sitemapper sitemapper, int pageNumber) throws IOException {
         writeSitemapHead(writer);
         super.writeSitemapEntries(writer, sitemapper, pageNumber);
         writeSitemapTail(writer);
@@ -96,18 +107,15 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     }
 
     private void writeIndexHead(PrintWriter writer) {
-        writer.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        writer.print("\n");
-        writer.print("<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
-        writer.print("\n");
+        writer.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        writer.print("<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
     }
 
     private void writeIndexTail(PrintWriter writer) {
         writer.print("</sitemapindex>");
     }
 
-    private void writeIndexExtry(PrintWriter writer, String serverUrl, String mapperName, String lastMod) throws
-            IOException {
+    private void writeIndexExtry(PrintWriter writer, String serverUrl, String mapperName, String lastMod) {
         writer.print(SITEMAP_OPEN);
         writer.print(String.format("<loc>%s/%s.%s.%s</loc>", serverUrl, path, mapperName, extension));
         writer.print(String.format("<lastmod>%s</lastmod>", lastMod));
@@ -115,10 +123,8 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     }
 
     private void writeSitemapHead(PrintWriter writer) {
-        writer.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        writer.print("\n");
-        writer.print("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
-        writer.print("\n");
+        writer.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        writer.print("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
     }
 
     private void writeSitemapTail(PrintWriter writer) {
@@ -126,17 +132,13 @@ public class XmlSitemapWriter extends AbstractSitemapWriter {
     }
 
     private String getServerUrl(Sitemapper sitemapper) {
-        String defaultServerUrl = serverUrlResolver.getServerUrl();
-
         // override server url for some sitemaps
-        String serverUrl = defaultServerUrl;
 
         if (sitemapper instanceof SitemapServerUrlResolver &&
                 ((SitemapServerUrlResolver) sitemapper).getServerUrl() != null) {
-            serverUrl = ((SitemapServerUrlResolver) sitemapper).getServerUrl();
+            return ((SitemapServerUrlResolver) sitemapper).getServerUrl();
         }
 
-        return serverUrl;
+        return serverUrlResolver.getServerUrl();
     }
-
 }
