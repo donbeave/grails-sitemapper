@@ -1,0 +1,10 @@
+language: groovy
+services:
+- redis
+jdk:
+- openjdk7
+- oraclejdk7
+- oraclejdk8
+before_script:
+- rm -rf target
+script: ./travis-build.sh
