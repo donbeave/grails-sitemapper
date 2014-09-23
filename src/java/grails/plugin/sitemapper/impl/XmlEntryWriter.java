@@ -29,7 +29,7 @@ import org.apache.commons.lang.StringEscapeUtils;
  *
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
-final class XmlEntryWriter implements EntryWriter {
+public final class XmlEntryWriter implements EntryWriter {
 
     private final SitemapDateUtils dateUtils = new SitemapDateUtils();
     private final Appendable output;

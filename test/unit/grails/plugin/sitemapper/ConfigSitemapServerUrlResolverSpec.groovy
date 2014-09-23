@@ -15,13 +15,17 @@
  */
 package grails.plugin.sitemapper
 
-import grails.plugin.spock.UnitSpec
+import grails.test.mixin.TestMixin
+import grails.test.mixin.support.GrailsUnitTestMixin
+
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import spock.lang.Specification
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
-class ConfigSitemapServerUrlResolverSpec extends UnitSpec {
+@TestMixin(GrailsUnitTestMixin)
+class ConfigSitemapServerUrlResolverSpec extends Specification {
 
     def "Should fail early if no server url has been configured"() {
         given:

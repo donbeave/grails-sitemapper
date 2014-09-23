@@ -1,13 +1,16 @@
 package grails.plugin.sitemapper.impl
 
-import grails.plugin.spock.UnitSpec
 import grails.plugin.sitemapper.SitemapperException
+import grails.test.mixin.TestMixin
+import grails.test.mixin.support.GrailsUnitTestMixin
+import spock.lang.Specification
 import spock.lang.Unroll
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
-class XmlEntryWriterSpec extends UnitSpec {
+@TestMixin(GrailsUnitTestMixin)
+class XmlEntryWriterSpec extends Specification {
 
     @Unroll("Writing tag #tagName with value #value")
     def "Should be able to format xml tags correctly"() {

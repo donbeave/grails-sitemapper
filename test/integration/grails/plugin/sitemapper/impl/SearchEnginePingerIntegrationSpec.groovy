@@ -15,7 +15,7 @@
  */
 package grails.plugin.sitemapper.impl
 
-import grails.plugin.spock.IntegrationSpec
+import grails.test.spock.IntegrationSpec
 import kim.spock.httpmock.HttpServer
 import kim.spock.httpmock.TestHttpServer
 import kim.spock.httpmock.WithHttpServer
