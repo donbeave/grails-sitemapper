@@ -15,8 +15,6 @@
  */
 package grails.plugin.sitemapper
 
-import grails.util.Holders
-
 /**
  * Default sitemapServerUrl bean.
  * Looks up server URL in application configuration (grails.serverURL).
@@ -26,31 +24,31 @@ import grails.util.Holders
  */
 class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver {
 
-    public String getServerUrl() {
+    def grailsApplication
+
+    String getServerUrl() {
         String serverUrl = getServerUrlFromConfiguration()
         if (serverUrl == null) {
             throw new SitemapperException("Unable to find server url, please set grails.serverURL "
-                    + "in Config.groovy, or provided your own implementation of SitemapServerUrlResolver.")
+                    + "in Config.groovy, or provide your own implementation of SitemapServerUrlResolver.")
         }
 
         return removeTrailingSlash(serverUrl)
     }
 
     protected String getServerUrlFromConfiguration() {
-        def serverUrl = Holders.config?.grails?.serverURL
-
+        def serverUrl = grailsApplication.config?.grails?.serverURL
         if (serverUrl) {
-            return Holders.config?.grails?.serverURL?.toString()
-        } else {
-            Integer port = System.getProperty('server.port', '8080').toInteger()
-            String host = System.getProperty('server.host', 'localhost')
-            String portPostfix = port != 80 ? ":${port}" : ''
-            return "http://${host}${portPostfix}"
+            return serverUrl
         }
+
+        Integer port = System.getProperty('server.port', '8080').toInteger()
+        String host = System.getProperty('server.host', 'localhost')
+        String portPostfix = port != 80 ? ":${port}" : ''
+        return "http://${host}${portPostfix}"
     }
 
     protected String removeTrailingSlash(String serverUrl) {
         serverUrl.endsWith('/') ? serverUrl.substring(0, serverUrl.size() - 1) : serverUrl
     }
-
 }

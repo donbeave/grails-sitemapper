@@ -18,7 +18,7 @@ import grails.plugin.sitemapper.artefact.SitemapperArtefactHandler
 import grails.plugin.sitemapper.impl.SearchEnginePinger
 import grails.plugin.sitemapper.impl.XmlSitemapWriter
 import grails.util.Environment
-import grails.util.Holders
+
 import org.apache.http.impl.client.DefaultHttpClient
 
 /**
@@ -29,40 +29,33 @@ class SitemapperGrailsPlugin {
 
     def version = '0.8.1'
     def grailsVersion = '2.0 > *'
-    def dependsOn = [:]
     def pluginExcludes = [
-            'web-app/css',
-            'web-app/images',
-            'web-app/js/application.js',
-            'grails-app/views/error.gsp',
-            '**/demo/**'
+        'lib/**',
+        'web-app/css/**',
+        'web-app/images/**',
+        'web-app/js/application.js',
+        '**/demo/**'
     ]
-
     def title = 'Sitemapper'
-    def author = 'Kim A. Betti, Alexey Zhokhov'
-    def authorEmail = 'kim@developer-b.com'
     def description = 'Autogeneration of sitemaps, see sitemaps.org for more information about sitemaps.'
-
     def documentation = 'http://grails.org/plugin/sitemapper'
-
     def license = 'APACHE'
     def developers = [
             [name: 'Kim A. Betti', email: 'kim@developer-b.com'],
             [name: 'Alexey Zhokhov', email: 'donbeave@gmail.com']]
     def organization = [name: 'Polusharie', url: 'http://www.polusharie.com']
-
     def issueManagement = [system: 'GITHUB', url: 'https://github.com/donbeave/grails-sitemapper/issues']
     def scm = [url: 'https://github.com/donbeave/grails-sitemapper/']
 
     def artefacts = [SitemapperArtefactHandler]
 
     def watchedResources = [
-            'file:./grails-app/sitemaps/**/*Sitemapper.groovy',
-            'file:./plugins/*/grails-app/sitemaps/**/*Sitemapper.groovy'
+        'file:./grails-app/sitemaps/**/*Sitemapper.groovy',
+        'file:./plugins/*/grails-app/sitemaps/**/*Sitemapper.groovy'
     ]
 
     def doWithSpring = {
-        loadQuartzConfig(application.config)
+        loadSitemapConfig(application.config)
 
         application.sitemapperClasses.each { mapperClass ->
             log.debug "Registering sitemapper class ${mapperClass.name} as sitemapper / bean"
@@ -71,41 +64,45 @@ class SitemapperGrailsPlugin {
             }
         }
 
-        sitemapServerUrlResolver(ConfigSitemapServerUrlResolver)
+        sitemapServerUrlResolver(ConfigSitemapServerUrlResolver) {
+            grailsApplication = ref('grailsApplication')
+        }
+
         sitemapWriter(XmlSitemapWriter) { bean ->
             bean.autowire = true
         }
 
         searchEnginePinger(SearchEnginePinger) {
-            searchEnginePingUrls = Holders.config?.searchEnginePingUrls ?: [:]
+            searchEnginePingUrls = application.config.searchEnginePingUrls ?: [:]
             sitemapServerUrlResolver = ref('sitemapServerUrlResolver')
             httpClient = new DefaultHttpClient()
         }
     }
 
     def onChange = { event ->
-        if (application.isArtefactOfType(SitemapperArtefactHandler.TYPE, event.source)) {
-            def mapperClass = application.addArtefact(SitemapperArtefactHandler.TYPE, event.source)
-            def beanDefinitions = beans {
+        if (!application.isArtefactOfType(SitemapperArtefactHandler.TYPE, event.source)) {
+            return
+        }
 
-                // Redefine the sitemapper bean
-                "${mapperClass.name}Sitemapper"(mapperClass.clazz) { bean ->
-                    bean.autowire = true
-                }
+        def mapperClass = application.addArtefact(SitemapperArtefactHandler.TYPE, event.source)
+        def beanDefinitions = beans {
 
-                // Contains references to the sitemappers so
-                // it has to be re-defined as well.
-                sitemapWriter(XmlSitemapWriter) { bean ->
-                    bean.autowire = true
-                }
-
+            // Redefine the sitemapper bean
+            "${mapperClass.name}Sitemapper"(mapperClass.clazz) { bean ->
+                bean.autowire = true
             }
 
-            beanDefinitions.registerBeans(event.ctx)
+            // Contains references to the sitemappers so
+            // it has to be re-defined as well.
+            sitemapWriter(XmlSitemapWriter) { bean ->
+                bean.autowire = true
+            }
         }
+
+        beanDefinitions.registerBeans(event.ctx)
     }
 
-    private ConfigObject loadQuartzConfig(ConfigObject config) {
+    private ConfigObject loadSitemapConfig(ConfigObject config) {
         def classLoader = new GroovyClassLoader(getClass().classLoader)
         String environment = Environment.current.name
 
@@ -118,7 +115,7 @@ class SitemapperGrailsPlugin {
         // Overwrite defaults with what Config.groovy has supplied, perhaps from external files
         newConfig.merge(config)
 
-        // Overwrite with contents of QuartzConfig
+        // Overwrite with contents of SitemapConfig
         try {
             newConfig.merge(new ConfigSlurper(environment).parse(
                     classLoader.loadClass('SitemapConfig'))
@@ -132,5 +129,4 @@ class SitemapperGrailsPlugin {
 
         return config.sitemap
     }
-
 }

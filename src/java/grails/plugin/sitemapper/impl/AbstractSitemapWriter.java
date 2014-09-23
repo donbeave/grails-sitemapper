@@ -15,11 +15,9 @@
  */
 package grails.plugin.sitemapper.impl;
 
+import static grails.plugin.sitemapper.artefact.SitemapperArtefactHandler.SUFFIX;
 import grails.plugin.sitemapper.SitemapServerUrlResolver;
 import grails.plugin.sitemapper.Sitemapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,7 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static grails.plugin.sitemapper.artefact.SitemapperArtefactHandler.SUFFIX;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.util.Assert;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
@@ -39,14 +39,14 @@ public abstract class AbstractSitemapWriter {
 
     public abstract void writeIndexEntries(PrintWriter writer) throws IOException;
 
-    public void writeSitemapEntries(PrintWriter writer, String sourceName, Integer pageNumber)
+    public void writeSitemapEntries(PrintWriter writer, String sourceName, int pageNumber)
             throws IOException {
         Sitemapper mapper = getMapperByName(sourceName);
 
         writeSitemapEntries(writer, mapper, pageNumber);
     }
 
-    public void writeSitemapEntries(PrintWriter writer, Sitemapper sitemapper, Integer pageNumber)
+    public void writeSitemapEntries(PrintWriter writer, Sitemapper sitemapper, int pageNumber)
             throws IOException {
         if (sitemapper instanceof PaginationSitemapper) {
             ((PaginationSitemapper) sitemapper).setPageIndex(pageNumber);
@@ -58,10 +58,7 @@ public abstract class AbstractSitemapWriter {
     protected Sitemapper getMapperByName(String name) {
         String mapperName = name.toLowerCase();
         Sitemapper mapper = sitemappers.get(mapperName);
-        if (mapper == null) {
-            throw new RuntimeException("Unable to find source with name " + name);
-        }
-
+        Assert.notNull(mapper, "Unable to find source with name " + name);
         return mapper;
     }
 
@@ -74,10 +71,10 @@ public abstract class AbstractSitemapWriter {
     @Required
     @Autowired
     public void setSitemappers(Set<Sitemapper> newMappers) {
-        this.sitemappers.clear();
+        sitemappers.clear();
         for (Sitemapper mapper : newMappers) {
             String mapperName = getMapperName(mapper.getClass());
-            this.sitemappers.put(mapperName, mapper);
+            sitemappers.put(mapperName, mapper);
         }
     }
 
@@ -92,5 +89,4 @@ public abstract class AbstractSitemapWriter {
     public void setSitemapServerUrlResolver(SitemapServerUrlResolver serverUrlResolver) {
         this.serverUrlResolver = serverUrlResolver;
     }
-
 }

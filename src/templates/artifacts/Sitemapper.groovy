@@ -7,10 +7,8 @@ class @artifact.name@ implements Sitemapper {
 
     Date previousUpdate = new Date()
 
-    @Override
-    public void withEntryWriter(EntryWriter entryWriter) {
+    void withEntryWriter(EntryWriter entryWriter) {
         entryWriter.addEntry '/test', new Date() - 1
         entryWriter.addEntry '/test-2', new Date(), MONTHLY, 0.5
     }
-
 }

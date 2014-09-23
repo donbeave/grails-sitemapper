@@ -7,25 +7,24 @@ class @artifact.name@ extends PaginationSitemapper {
 
     Date previousUpdate = new Date()
 
-    final Integer perPageCount = 40
-    final Long totalCount = 100
+    final int perPageCount = 40
+    final long totalCount = 100
 
     @Override
-    public void withEntryWriter(EntryWriter entryWriter) {
+    void withEntryWriter(EntryWriter entryWriter) {
         switch (pageIndex) {
             case 0:
                 1.times { n ->
                     entryWriter.addEntry "/test/${n}", new Date() - 1
                 }
 
-                break;
+                break
 
             case 1:
                 2.times { n ->
                     entryWriter.addEntry "/test/${n}", new Date(), MONTHLY, 0.5
                 }
-                break;
+                break
         }
     }
-
 }

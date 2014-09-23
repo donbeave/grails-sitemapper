@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import grails.util.Holders
 import org.springframework.context.ApplicationContext
 
 /**
@@ -23,11 +22,10 @@ import org.springframework.context.ApplicationContext
 class SitemapperUrlMappings {
 
     static mappings = { ApplicationContext context ->
-        def path = Holders.config.sitemap.prefix
-        String extension = context.getBean('sitemapWriter').extension
+        def path = context.grailsApplication.config.sitemap.prefix
+        String extension = context.sitemapWriter.extension
 
         "/${path}.${extension}"(controller: 'sitemapper', plugin: 'sitemapper')
         "/${path}.${name}.${extension}"(controller: 'sitemapper', plugin: 'sitemapper', action: 'source')
     }
-
 }
