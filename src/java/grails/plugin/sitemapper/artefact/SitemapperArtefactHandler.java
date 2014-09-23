@@ -15,7 +15,9 @@
  */
 package grails.plugin.sitemapper.artefact;
 
+import org.codehaus.groovy.grails.commons.AbstractGrailsClass;
 import org.codehaus.groovy.grails.commons.ArtefactHandlerAdapter;
+import org.codehaus.groovy.grails.commons.GrailsClass;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
@@ -29,4 +31,13 @@ public class SitemapperArtefactHandler extends ArtefactHandlerAdapter {
         super(TYPE, SitemapperClass.class, DefaultSitemapperClass.class, SUFFIX);
     }
 
+    public static interface SitemapperClass extends GrailsClass {
+        // Nothing to see here, move along..
+    }
+
+    public static class DefaultSitemapperClass extends AbstractGrailsClass implements SitemapperClass {
+        public DefaultSitemapperClass(Class<?> clazz) {
+            super(clazz, SitemapperArtefactHandler.SUFFIX);
+        }
+    }
 }
