@@ -15,9 +15,11 @@
  */
 package grails.plugin.sitemapper.impl;
 
-import static grails.plugin.sitemapper.artefact.SitemapperArtefactHandler.SUFFIX;
 import grails.plugin.sitemapper.SitemapServerUrlResolver;
 import grails.plugin.sitemapper.Sitemapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,9 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.util.Assert;
+import static grails.plugin.sitemapper.artefact.SitemapperArtefactHandler.SUFFIX;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
@@ -89,4 +89,5 @@ public abstract class AbstractSitemapWriter {
     public void setSitemapServerUrlResolver(SitemapServerUrlResolver serverUrlResolver) {
         this.serverUrlResolver = serverUrlResolver;
     }
+
 }

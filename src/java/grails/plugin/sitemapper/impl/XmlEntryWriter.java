@@ -18,11 +18,10 @@ package grails.plugin.sitemapper.impl;
 import grails.plugin.sitemapper.ContentChangeFrequency;
 import grails.plugin.sitemapper.EntryWriter;
 import grails.plugin.sitemapper.SitemapperException;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.io.IOException;
 import java.util.Date;
-
-import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * Responsible for printing sitemap entries as XML to output stream.

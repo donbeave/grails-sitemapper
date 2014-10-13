@@ -1,5 +1,3 @@
-import org.codehaus.groovy.grails.cli.CommandLineHelper
-
 /*
  * Copyright 2014 the original author or authors.
  *
@@ -15,6 +13,7 @@ import org.codehaus.groovy.grails.cli.CommandLineHelper
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.codehaus.groovy.grails.cli.CommandLineHelper
 
 /**
  * Gant script that creates a new Grails Sitemap Artefact

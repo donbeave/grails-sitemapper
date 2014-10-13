@@ -18,17 +18,16 @@ package grails.plugin.sitemapper.impl;
 import grails.plugin.sitemapper.EntryWriter;
 import grails.plugin.sitemapper.SitemapServerUrlResolver;
 import grails.plugin.sitemapper.Sitemapper;
+import org.codehaus.groovy.grails.commons.GrailsApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
-
-import org.codehaus.groovy.grails.commons.GrailsApplication;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
@@ -141,4 +140,5 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
 
         return serverUrlResolver.getServerUrl();
     }
+
 }

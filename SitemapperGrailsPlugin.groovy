@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import grails.plugin.sitemapper.ConfigSitemapServerUrlResolver
 import grails.plugin.sitemapper.artefact.SitemapperArtefactHandler
 import grails.plugin.sitemapper.impl.SearchEnginePinger
 import grails.plugin.sitemapper.impl.XmlSitemapWriter
 import grails.util.Environment
-
 import org.apache.http.impl.client.DefaultHttpClient
 
 /**
@@ -30,11 +30,8 @@ class SitemapperGrailsPlugin {
     def version = '0.8.1'
     def grailsVersion = '2.0 > *'
     def pluginExcludes = [
-        'lib/**',
-        'web-app/css/**',
-        'web-app/images/**',
-        'web-app/js/application.js',
-        '**/demo/**'
+            'lib/**',
+            '**/demo/**'
     ]
     def title = 'Sitemapper'
     def description = 'Autogeneration of sitemaps, see sitemaps.org for more information about sitemaps.'
@@ -50,8 +47,8 @@ class SitemapperGrailsPlugin {
     def artefacts = [SitemapperArtefactHandler]
 
     def watchedResources = [
-        'file:./grails-app/sitemaps/**/*Sitemapper.groovy',
-        'file:./plugins/*/grails-app/sitemaps/**/*Sitemapper.groovy'
+            'file:./grails-app/sitemaps/**/*Sitemapper.groovy',
+            'file:./plugins/*/grails-app/sitemaps/**/*Sitemapper.groovy'
     ]
 
     def doWithSpring = {
@@ -127,6 +124,7 @@ class SitemapperGrailsPlugin {
         // Now merge our correctly merged DefaultSitemapConfig and SitemapConfig into the main config
         config.merge(newConfig)
 
-        return config.sitemap
+        config.sitemap
     }
+
 }

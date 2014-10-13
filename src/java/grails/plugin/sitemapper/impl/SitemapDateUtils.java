@@ -30,4 +30,5 @@ public class SitemapDateUtils {
         final String postfix = formatted.substring(formatted.length() - 2); // Hack for timezone format
         return formatted.substring(0, formatted.length() - 2) + ":" + postfix;
     }
+
 }

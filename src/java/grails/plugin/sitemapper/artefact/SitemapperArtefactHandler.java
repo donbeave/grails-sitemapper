@@ -40,4 +40,5 @@ public class SitemapperArtefactHandler extends ArtefactHandlerAdapter {
             super(clazz, SitemapperArtefactHandler.SUFFIX);
         }
     }
+
 }

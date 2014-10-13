@@ -15,9 +15,10 @@
  */
 package demo
 
-import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
 import grails.plugin.sitemapper.EntryWriter
 import grails.plugin.sitemapper.Sitemapper
+
+import static grails.plugin.sitemapper.ContentChangeFrequency.MONTHLY
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
@@ -31,4 +32,5 @@ class ForumSitemapper implements Sitemapper {
         entryWriter.addEntry "/forum/entry/test", new Date() - 1
         entryWriter.addEntry "/forum/entry/test-2", new Date(), MONTHLY, 0.5
     }
+
 }

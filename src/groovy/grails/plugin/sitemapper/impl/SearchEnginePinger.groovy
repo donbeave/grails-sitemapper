@@ -16,7 +16,6 @@
 package grails.plugin.sitemapper.impl
 
 import grails.plugin.sitemapper.SitemapServerUrlResolver
-
 import org.apache.commons.logging.LogFactory
 import org.apache.http.HttpResponse
 import org.apache.http.client.ClientProtocolException

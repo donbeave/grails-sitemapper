@@ -15,12 +15,11 @@
  */
 package grails.plugin.sitemapper
 
-import java.util.zip.GZIPOutputStream
-
-import javax.servlet.http.HttpServletResponse
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.Assert
+
+import javax.servlet.http.HttpServletResponse
+import java.util.zip.GZIPOutputStream
 
 /**
  * Generates sitemaps on the fly. The XML output is piped directly to
@@ -122,4 +121,5 @@ class SitemapperController {
 
         return 0;
     }
+
 }
