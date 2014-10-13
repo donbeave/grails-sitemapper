@@ -16,21 +16,21 @@ grails.project.dependency.resolution = {
         mavenCentral()
     }
     dependencies {
-        compile 'org.apache.httpcomponents:httpclient:4.2.5', {
+        compile 'org.apache.httpcomponents:httpclient:4.2.6', {
             excludes 'httpcore', 'commons-logging', 'commons-codec', 'junit', 'mockito-core'
             export = false
         }
-        compile 'org.apache.httpcomponents:httpcore:4.2.4', {
+        compile 'org.apache.httpcomponents:httpcore:4.2.5', {
             excludes 'junit', 'mockito-core'
             export = false
         }
-        test 'org.objenesis:objenesis:1.2', 'cglib:cglib-nodep:2.2', {
+        test 'org.objenesis:objenesis:2.1', 'cglib:cglib-nodep:3.1', {
             export = false
         }
     }
 
     plugins {
-        build ':release:3.0.1', ':rest-client-builder:1.0.3', {
+        build ':release:3.0.1', ':rest-client-builder:2.0.3', {
             export = false
         }
     }
