@@ -17,8 +17,6 @@ package grails.plugin.sitemapper
 
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
 import spock.lang.Specification
 
 /**
@@ -26,21 +24,6 @@ import spock.lang.Specification
  */
 @TestMixin(GrailsUnitTestMixin)
 class ConfigSitemapServerUrlResolverSpec extends Specification {
-
-    def "Should fail early if no server url has been configured"() {
-        given:
-        GrailsApplication appMock = Mock(GrailsApplication)
-        ConfigSitemapServerUrlResolver urlResolver = new ConfigSitemapServerUrlResolver(grailsApplication: appMock)
-
-        when:
-        urlResolver.getServerUrl()
-
-        then:
-        1 * appMock.getConfig() >> null
-
-        and:
-        SitemapperException ex = thrown()
-    }
 
     def "Should be able to remove trailing slash from url"() {
         given:
