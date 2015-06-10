@@ -16,10 +16,12 @@
 sitemap {
     prefix = 'sitemap'
     gzip = false
+    extension = 'xml'
 }
 
 environments {
     production {
         sitemap.gzip = true
+        sitemap.extension = 'xml.gz'
     }
 }

@@ -52,7 +52,7 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
         Properties properties = grailsApplication.getConfig().toProperties();
 
         path = properties.getProperty("sitemap.prefix");
-        extension = properties.getProperty("sitemap.gzip").equals("true") ? "xml.gz" : "xml";
+        extension = properties.getProperty("sitemap.extension");
     }
 
     @Override
