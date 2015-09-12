@@ -27,7 +27,7 @@ import org.apache.http.impl.client.DefaultHttpClient
  */
 class SitemapperGrailsPlugin {
 
-    def version = '0.8.2'
+    def version = '0.9-SNAPSHOT'
     def grailsVersion = '2.0 > *'
     def pluginExcludes = [
             'lib/**',
