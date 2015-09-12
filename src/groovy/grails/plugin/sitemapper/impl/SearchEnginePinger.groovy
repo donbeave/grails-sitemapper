@@ -31,7 +31,7 @@ import org.springframework.beans.factory.InitializingBean
  */
 class SearchEnginePinger implements InitializingBean {
 
-    private final static log = LogFactory.getLog(this)
+    private static final log = LogFactory.getLog(this)
 
     SitemapServerUrlResolver sitemapServerUrlResolver
     int pingTimeoutInSeconds = 8
@@ -52,6 +52,24 @@ class SearchEnginePinger implements InitializingBean {
         }
 
         return allSuccess
+    }
+
+    void setSearchEnginePingUrls(Map<String, String> urls) {
+        urls.each { name, urlFormat ->
+            addSearchEnginePingUrl(name, urlFormat)
+        }
+    }
+
+    void addSearchEnginePingUrl(String engineName, String urlFormat) {
+        log.debug "Adding ping url for $engineName -> $urlFormat"
+        searchEnginePingUrls[engineName] = urlFormat
+    }
+
+    @Override
+    void afterPropertiesSet() {
+        httpParams = httpClient.getParams()
+        HttpConnectionParams.setConnectionTimeout(httpParams, pingTimeoutInSeconds * 1000)
+        HttpConnectionParams.setSoTimeout(httpParams, pingTimeoutInSeconds * 1000);
     }
 
     private boolean pingSearchEngine(String engineName, String urlFormat, String sitemapUrl) {
@@ -75,23 +93,6 @@ class SearchEnginePinger implements InitializingBean {
         }
 
         return false
-    }
-
-    void afterPropertiesSet() {
-        httpParams = httpClient.getParams()
-        HttpConnectionParams.setConnectionTimeout(httpParams, pingTimeoutInSeconds * 1000)
-        HttpConnectionParams.setSoTimeout(httpParams, pingTimeoutInSeconds * 1000);
-    }
-
-    void setSearchEnginePingUrls(Map<String, String> urls) {
-        urls.each { name, urlFormat ->
-            addSearchEnginePingUrl(name, urlFormat)
-        }
-    }
-
-    void addSearchEnginePingUrl(String engineName, String urlFormat) {
-        log.debug "Adding ping url for $engineName -> $urlFormat"
-        searchEnginePingUrls[engineName] = urlFormat
     }
 
 }

@@ -21,16 +21,16 @@ package grails.plugin.sitemapper;
 @SuppressWarnings("serial")
 public class SitemapperException extends RuntimeException {
 
-    public SitemapperException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     public SitemapperException(String message) {
         super(message);
     }
 
     public SitemapperException(Throwable cause) {
         super(cause);
+    }
+
+    public SitemapperException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

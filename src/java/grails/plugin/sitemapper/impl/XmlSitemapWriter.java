@@ -34,10 +34,10 @@ import java.util.Properties;
  */
 public class XmlSitemapWriter extends AbstractSitemapWriter implements InitializingBean {
 
-    private final static Logger log = LoggerFactory.getLogger(XmlSitemapWriter.class);
+    private static final Logger log = LoggerFactory.getLogger(XmlSitemapWriter.class);
 
-    private final static String SITEMAP_OPEN = "<sitemap>";
-    private final static String SITEMAP_CLOSE = "</sitemap>\n";
+    private static final String SITEMAP_OPEN = "<sitemap>";
+    private static final String SITEMAP_CLOSE = "</sitemap>\n";
 
     public String path;
     public String extension;
@@ -48,6 +48,7 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
         grailsApplication = app;
     }
 
+    @Override
     public void afterPropertiesSet() {
         Properties properties = grailsApplication.getConfig().toProperties();
 

@@ -37,7 +37,20 @@ public abstract class AbstractSitemapWriter {
     protected SitemapServerUrlResolver serverUrlResolver;
     protected Map<String, Sitemapper> sitemappers = new HashMap<String, Sitemapper>();
 
-    public abstract void writeIndexEntries(PrintWriter writer) throws IOException;
+    @Required
+    @Autowired
+    public void setSitemappers(Set<Sitemapper> newMappers) {
+        sitemappers.clear();
+        for (Sitemapper mapper : newMappers) {
+            String mapperName = getMapperName(mapper.getClass());
+            sitemappers.put(mapperName, mapper);
+        }
+    }
+
+    @Required
+    public void setSitemapServerUrlResolver(SitemapServerUrlResolver serverUrlResolver) {
+        this.serverUrlResolver = serverUrlResolver;
+    }
 
     public void writeSitemapEntries(PrintWriter writer, String sourceName, int pageNumber)
             throws IOException {
@@ -55,12 +68,7 @@ public abstract class AbstractSitemapWriter {
         writeSitemapEntries(writer, sitemapper);
     }
 
-    protected Sitemapper getMapperByName(String name) {
-        String mapperName = name.toLowerCase();
-        Sitemapper mapper = sitemappers.get(mapperName);
-        Assert.notNull(mapper, "Unable to find source with name " + name);
-        return mapper;
-    }
+    public abstract void writeIndexEntries(PrintWriter writer) throws IOException;
 
     public abstract void writeSitemapEntries(PrintWriter writer, Sitemapper m) throws IOException;
 
@@ -68,14 +76,11 @@ public abstract class AbstractSitemapWriter {
         return sitemappers;
     }
 
-    @Required
-    @Autowired
-    public void setSitemappers(Set<Sitemapper> newMappers) {
-        sitemappers.clear();
-        for (Sitemapper mapper : newMappers) {
-            String mapperName = getMapperName(mapper.getClass());
-            sitemappers.put(mapperName, mapper);
-        }
+    protected Sitemapper getMapperByName(String name) {
+        String mapperName = name.toLowerCase();
+        Sitemapper mapper = sitemappers.get(mapperName);
+        Assert.notNull(mapper, "Unable to find source with name " + name);
+        return mapper;
     }
 
     protected String getMapperName(Class<? extends Sitemapper> sitemapperClass) {
@@ -83,11 +88,6 @@ public abstract class AbstractSitemapWriter {
         Assert.isTrue(className.endsWith(SUFFIX));
         int endIndex = className.length() - SUFFIX.length();
         return className.substring(0, endIndex).toLowerCase();
-    }
-
-    @Required
-    public void setSitemapServerUrlResolver(SitemapServerUrlResolver serverUrlResolver) {
-        this.serverUrlResolver = serverUrlResolver;
     }
 
 }

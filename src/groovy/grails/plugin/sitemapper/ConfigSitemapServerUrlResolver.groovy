@@ -26,6 +26,7 @@ class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver {
 
     def grailsApplication
 
+    @Override
     String getServerUrl() {
         String serverUrl = getServerUrlFromConfiguration()
         if (serverUrl == null) {
@@ -51,4 +52,5 @@ class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver {
     protected String removeTrailingSlash(String serverUrl) {
         serverUrl.endsWith('/') ? serverUrl.substring(0, serverUrl.size() - 1) : serverUrl
     }
+
 }

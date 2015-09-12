@@ -30,17 +30,15 @@ import java.util.Date;
  */
 public final class XmlEntryWriter implements EntryWriter {
 
+    public static final String LOCATION_TAG = "loc";
+    public static final String LAST_MOD_TAG = "lastmod";
+    public static final String CHANGE_FREQ_TAG = "changefreq";
+    public static final String PRIORITY_TAG = "priority";
+    private static final String URL_OPEN = "<url>";
+    private static final String URL_CLOSE = "</url>\n";
     private final SitemapDateUtils dateUtils = new SitemapDateUtils();
     private final Appendable output;
     private final String serverUrl;
-
-    private final static String URL_OPEN = "<url>";
-    private final static String URL_CLOSE = "</url>\n";
-
-    public final static String LOCATION_TAG = "loc";
-    public final static String LAST_MOD_TAG = "lastmod";
-    public final static String CHANGE_FREQ_TAG = "changefreq";
-    public final static String PRIORITY_TAG = "priority";
 
     public XmlEntryWriter(Appendable output, String serverUrl) {
         this.serverUrl = serverUrl;
