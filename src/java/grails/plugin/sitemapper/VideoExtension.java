@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Kim A. Betti, Alexey Zhokhov
+ * Copyright 2015 Kim A. Betti, Alexey Zhokhov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,15 @@
  */
 package grails.plugin.sitemapper;
 
-import java.io.IOException;
-import java.util.Date;
-
 /**
- * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public interface EntryWriter {
+public class VideoExtension implements Extension {
 
-    void addEntry(String location, Date modifiedAt) throws IOException;
-
-    void addEntry(String location, Date modifiedAt, ContentChangeFrequency freq, double priority) throws IOException;
-
-    void add(Entry entry);
+    private String contentLocation;
+    private VideoPlayerLocation playerLocation;
+    private String thumbnailLocation;
+    private String title;
+    private String description;
 
 }

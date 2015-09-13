@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Kim A. Betti, Alexey Zhokhov
+ * Copyright 2015 Kim A. Betti, Alexey Zhokhov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,28 @@
  */
 package grails.plugin.sitemapper;
 
-import java.io.IOException;
-import java.util.Date;
-
 /**
- * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public interface EntryWriter {
+public class AlternateLinkExtension implements Extension {
 
-    void addEntry(String location, Date modifiedAt) throws IOException;
+    private String location;
+    private String language;
 
-    void addEntry(String location, Date modifiedAt, ContentChangeFrequency freq, double priority) throws IOException;
+    public String getLocation() {
+        return location;
+    }
 
-    void add(Entry entry);
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
 }
