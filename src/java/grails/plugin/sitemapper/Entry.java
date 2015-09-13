@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static grails.plugin.sitemapper.ValidationUtils.assertPriority;
+
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
@@ -60,6 +62,8 @@ public class Entry {
     }
 
     public void setPriority(double priority) {
+        assertPriority(priority);
+
         this.priority = priority;
     }
 
@@ -71,11 +75,11 @@ public class Entry {
         this.expires = expires;
     }
 
-    Collection<Extension> getExtensions() {
+    public Collection<Extension> getExtensions() {
         return extensions;
     }
 
-    void setExtensions(List<Extension> extensions) {
+    public void setExtensions(List<Extension> extensions) {
         this.extensions = extensions;
     }
 

@@ -26,8 +26,8 @@ public interface EntryWriter {
 
     void addEntry(String location, Date modifiedAt) throws IOException;
 
-    void addEntry(String location, Date modifiedAt, ContentChangeFrequency freq, double priority) throws IOException;
+    void addEntry(String location, Date modifiedAt, ContentChangeFrequency freq, Double priority) throws IOException;
 
-    void add(Entry entry);
+    void add(Entry entry) throws IOException;
 
 }

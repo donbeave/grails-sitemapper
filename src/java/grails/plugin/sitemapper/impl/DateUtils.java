@@ -17,17 +17,27 @@ package grails.plugin.sitemapper.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
+ * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public class SitemapDateUtils {
+public final class DateUtils {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mmZ";
+    private static final String W3C_FULLDATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-    public String formatForSitemap(final Date date) {
-        final String formatted = new SimpleDateFormat(DATE_FORMAT).format(date);
-        final String postfix = formatted.substring(formatted.length() - 2); // Hack for timezone format
+    private SimpleDateFormat dateFormat;
+
+    public DateUtils() {
+        dateFormat = new SimpleDateFormat(W3C_FULLDATE_FORMAT, Locale.getDefault());
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
+    public String format(Date date) {
+        String formatted = dateFormat.format(date);
+        String postfix = formatted.substring(formatted.length() - 2); // Hack for timezone format
         return formatted.substring(0, formatted.length() - 2) + ":" + postfix;
     }
 

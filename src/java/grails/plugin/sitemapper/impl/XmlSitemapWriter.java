@@ -60,7 +60,7 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
     public void writeIndexEntries(PrintWriter writer) throws IOException {
         writeIndexHead(writer);
 
-        SitemapDateUtils dateUtils = new SitemapDateUtils();
+        DateUtils dateUtils = new DateUtils();
 
         for (Map.Entry<String, Sitemapper> entry : sitemappers.entrySet()) {
             Sitemapper mapper = entry.getValue();
@@ -75,7 +75,7 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
                 continue;
             }
 
-            String lastMod = dateUtils.formatForSitemap(previousUpdate);
+            String lastMod = dateUtils.format(previousUpdate);
 
             if (mapper instanceof PaginationSitemapper) {
                 PaginationSitemapper paginationMapper = (PaginationSitemapper) mapper;
@@ -124,7 +124,13 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
 
     private void writeSitemapHead(PrintWriter writer) {
         writer.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        writer.print("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
+        writer.print("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\n" +
+                "        xmlns:xhtml=\"http://www.w3.org/1999/xhtml\"\n" +
+                "        xmlns:content=\"http://www.google.com/schemas/sitemap-content/1.0\"\n" +
+                "        xmlns:mobile=\"http://www.google.com/schemas/sitemap-mobile/1.0\"\n" +
+                "        xmlns:image=\"http://www.google.com/schemas/sitemap-image/1.1\"\n" +
+                "        xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\"\n" +
+                "        xmlns:video=\"http://www.google.com/schemas/sitemap-video/1.1\">\n");
     }
 
     private void writeSitemapTail(PrintWriter writer) {
