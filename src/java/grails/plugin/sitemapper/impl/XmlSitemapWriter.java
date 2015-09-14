@@ -31,6 +31,7 @@ import java.util.Properties;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
+ * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
 public class XmlSitemapWriter extends AbstractSitemapWriter implements InitializingBean {
 

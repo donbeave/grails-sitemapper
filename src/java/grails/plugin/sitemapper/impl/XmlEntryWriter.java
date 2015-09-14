@@ -17,6 +17,7 @@ package grails.plugin.sitemapper.impl;
 
 import grails.plugin.sitemapper.*;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -42,11 +43,18 @@ public final class XmlEntryWriter implements EntryWriter {
     public static final String ALT_LINK = "xhtml:link";
     public static final String DATA_OBJECT_TAG = "DataObject";
     public static final String DATA_OBJECT_ATTR_TAG = "Attribute";
+    public static final String IMAGE_LOCATION_TAG = "image:loc";
+    public static final String IMAGE_CAPTION_TAG = "image:caption";
+    public static final String IMAGE_GEO_LOCATION_TAG = "image:geo_location";
+    public static final String IMAGE_TITLE = "image:title";
+    public static final String IMAGE_LICENSE = "image:license";
 
     private static final String URL_OPEN = "<url>";
     private static final String URL_CLOSE = "</url>\n";
     private static final String PAGE_MAP_OPEN = "<PageMap xmlns=\"http://www.google.com/schemas/sitemap-pagemap/1.0\">";
     private static final String PAGE_MAP_CLOSE = "</PageMap>\n";
+    private static final String IMAGE_OPEN = "<image:image>";
+    private static final String IMAGE_CLOSE = "</image:image>\n";
 
     private final DateUtils dateUtils = new DateUtils();
     private final Appendable output;
@@ -143,7 +151,15 @@ public final class XmlEntryWriter implements EntryWriter {
 
                     output.append(PAGE_MAP_CLOSE);
                 } else if (extension instanceof ImageExtension) {
-                    // TODO https://support.google.com/webmasters/answer/178636
+                    ImageExtension item = (ImageExtension) extension;
+
+                    String itemLocation = fixLocation(item.getLocation());
+
+                    assertLocation(itemLocation);
+                    if (item.getLicense() != null)
+                        assertLocation(item.getLicense());
+
+                    printImage(itemLocation, item.getCaption(), item.getGeoLocation(), item.getTitle(), item.getLicense());
                 } else if (extension instanceof VideoExtension) {
                     // TODO https://support.google.com/webmasters/answer/80471?vid=1-635776480131450456-2975046344
                     // https://support.google.com/webmasters/answer/183668?hl=en
@@ -205,6 +221,26 @@ public final class XmlEntryWriter implements EntryWriter {
 
     protected String getDataObjectAttr(String name, String value) throws IOException {
         return String.format("<%s %s>%s</%1$s>", DATA_OBJECT_ATTR_TAG, "type=\"" + name + "\"", escape(value));
+    }
+
+    protected void printImage(String itemLocation, String caption, String geoLocation, String title, String license) throws IOException {
+        output.append(IMAGE_OPEN);
+
+        printTag(LOCATION_TAG, itemLocation);
+
+        if (StringUtils.isNotEmpty(caption))
+            printTag(IMAGE_LOCATION_TAG, caption);
+
+        if (StringUtils.isNotEmpty(geoLocation))
+            printTag(IMAGE_GEO_LOCATION_TAG, geoLocation);
+
+        if (StringUtils.isNotEmpty(title))
+            printTag(IMAGE_TITLE, title);
+
+        if (StringUtils.isNotEmpty(license))
+            printTag(IMAGE_LICENSE, license);
+
+        output.append(IMAGE_CLOSE);
     }
 
     protected void printTag(String tagName, String value) throws IOException {
