@@ -18,34 +18,8 @@ package grails.plugin.sitemapper;
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public class VideoPlayerLocation {
+public enum PriceType {
 
-    private String location;
-    private boolean allowEmbed = false;
-    private String autoPlay;
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public boolean isAllowEmbed() {
-        return allowEmbed;
-    }
-
-    public void setAllowEmbed(boolean allowEmbed) {
-        this.allowEmbed = allowEmbed;
-    }
-
-    public String getAutoPlay() {
-        return autoPlay;
-    }
-
-    public void setAutoPlay(String autoPlay) {
-        this.autoPlay = autoPlay;
-    }
+    RENT, OWN
 
 }

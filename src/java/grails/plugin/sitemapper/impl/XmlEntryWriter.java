@@ -48,6 +48,26 @@ public final class XmlEntryWriter implements EntryWriter {
     public static final String IMAGE_GEO_LOCATION_TAG = "image:geo_location";
     public static final String IMAGE_TITLE = "image:title";
     public static final String IMAGE_LICENSE = "image:license";
+    public static final String VIDEO_THUMBNAIL_TAG = "video:thumbnail_loc";
+    public static final String VIDEO_TITLE_TAG = "video:title";
+    public static final String VIDEO_DESCRIPTION_TAG = "video:description";
+    public static final String VIDEO_CONTENT_LOCATION_TAG = "video:content_loc";
+    public static final String VIDEO_PLAYER_LOCATION_TAG = "video:player_loc";
+    public static final String VIDEO_DURATION_TAG = "video:duration";
+    public static final String VIDEO_EXPIRATION_DATE_TAG = "video:expiration_date";
+    public static final String VIDEO_RATING_TAG = "video:rating";
+    public static final String VIDEO_VIEW_COUNT_TAG = "video:view_count";
+    public static final String VIDEO_PUBLICATION_DATE_TAG = "video:publication_date";
+    public static final String VIDEO_FAMILY_FRIENDLY_TAG = "video:family_friendly";
+    public static final String VIDEO_TAG_TAG = "video:tag";
+    public static final String VIDEO_CATEGORY_TAG = "video:category";
+    public static final String VIDEO_RESTRICTION_TAG = "video:restriction";
+    public static final String VIDEO_GALLERY_LOCATION_TAG = "video:gallery_loc";
+    public static final String VIDEO_PRICE_TAG = "video:price";
+    public static final String VIDEO_REQUIRES_SUBSCRIPTION_TAG = "video:requires_subscription";
+    public static final String VIDEO_UPLOADER_TAG = "video:uploader";
+    public static final String VIDEO_PLATFORM_TAG = "video:platform";
+    public static final String VIDEO_LIVE_TAG = "video:live";
 
     private static final String URL_OPEN = "<url>";
     private static final String URL_CLOSE = "</url>\n";
@@ -55,6 +75,8 @@ public final class XmlEntryWriter implements EntryWriter {
     private static final String PAGE_MAP_CLOSE = "</PageMap>\n";
     private static final String IMAGE_OPEN = "<image:image>";
     private static final String IMAGE_CLOSE = "</image:image>\n";
+    private static final String VIDEO_OPEN = "<video:video>";
+    private static final String VIDEO_CLOSE = "</video:video>\n";
 
     private final DateUtils dateUtils = new DateUtils();
     private final Appendable output;
@@ -161,8 +183,15 @@ public final class XmlEntryWriter implements EntryWriter {
 
                     printImage(itemLocation, item.getCaption(), item.getGeoLocation(), item.getTitle(), item.getLicense());
                 } else if (extension instanceof VideoExtension) {
-                    // TODO https://support.google.com/webmasters/answer/80471?vid=1-635776480131450456-2975046344
-                    // https://support.google.com/webmasters/answer/183668?hl=en
+                    VideoExtension item = (VideoExtension) extension;
+
+                    String thumbnailLocation = fixLocation(item.getThumbnailLocation());
+                    String contentLocation = item.getContentLocation() != null ? fixLocation(item.getContentLocation()) : null;
+                    String playerLocation = item.getPlayerLocation() != null ? fixLocation(item.getPlayerLocation().getLocation()) : null;
+                    String galleryLocation = item.getGalleryLocation() != null ? fixLocation(item.getGalleryLocation()) : null;
+
+                    // TODO
+                    printVideo(thumbnailLocation);
                 } else if (extension instanceof NewsExtension) {
                     // TODO https://support.google.com/news/publisher/answer/74288
                 }
@@ -241,6 +270,16 @@ public final class XmlEntryWriter implements EntryWriter {
             printTag(IMAGE_LICENSE, license);
 
         output.append(IMAGE_CLOSE);
+    }
+
+    protected void printVideo(String thumbnailLocation) throws IOException {
+        output.append(VIDEO_OPEN);
+
+        printTag(VIDEO_THUMBNAIL_TAG, thumbnailLocation);
+
+        // TODO https://developers.google.com/webmasters/videosearch/sitemaps
+
+        output.append(VIDEO_CLOSE);
     }
 
     protected void printTag(String tagName, String value) throws IOException {
