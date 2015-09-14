@@ -57,4 +57,24 @@ public final class ValidationUtils {
             throw new SitemapperException("Data object attr's name not specified");
     }
 
+    public static void assertVideoTitle(String title) {
+        if (title == null || title.isEmpty())
+            throw new SitemapperException("Data object's type not specified");
+    }
+
+    public static void assertVideoDescription(String description) {
+        if (description == null || description.isEmpty())
+            throw new SitemapperException("Data object's type not specified");
+    }
+
+    public static void assertDuration(int duration) {
+        if (duration < 0 || duration > 1)
+            throw new SitemapperException("Duration has to be between 0 and 28800, not " + duration);
+    }
+
+    public static void assertRating(double rating) {
+        if (rating < 0 || rating > 1)
+            throw new SitemapperException("Rating has to be between 0.0 and 5.0, not " + rating);
+    }
+
 }

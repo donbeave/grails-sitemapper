@@ -43,11 +43,12 @@ public class VideoExtension implements Extension {
     private double price;
     private PriceType priceType = PriceType.OWN;
     private Resolution priceResolution;
-    private Currency currency;
+    private Currency currency = Currency.USD;
     private boolean requiresSubscription;
     private String uploader;
-    private String uploadedInfo;
-    private Platform platform;
+    private String uploaderInfo;
+    private List<Platform> platforms;
+    private Relationship platformsRelationship = Relationship.ALLOW;
     private boolean live;
 
     public String getThumbnailLocation() {
@@ -202,20 +203,12 @@ public class VideoExtension implements Extension {
         this.uploader = uploader;
     }
 
-    public String getUploadedInfo() {
-        return uploadedInfo;
+    public String getUploaderInfo() {
+        return uploaderInfo;
     }
 
-    public void setUploadedInfo(String uploadedInfo) {
-        this.uploadedInfo = uploadedInfo;
-    }
-
-    public Platform getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(Platform platform) {
-        this.platform = platform;
+    public void setUploaderInfo(String uploaderInfo) {
+        this.uploaderInfo = uploaderInfo;
     }
 
     public boolean isLive() {
@@ -242,4 +235,35 @@ public class VideoExtension implements Extension {
         this.tags = tags;
     }
 
+    public PriceType getPriceType() {
+        return priceType;
+    }
+
+    public void setPriceType(PriceType priceType) {
+        this.priceType = priceType;
+    }
+
+    public Resolution getPriceResolution() {
+        return priceResolution;
+    }
+
+    public void setPriceResolution(Resolution priceResolution) {
+        this.priceResolution = priceResolution;
+    }
+
+    public List<Platform> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(List<Platform> platforms) {
+        this.platforms = platforms;
+    }
+
+    public Relationship getPlatformsRelationship() {
+        return platformsRelationship;
+    }
+
+    public void setPlatformsRelationship(Relationship platformsRelationship) {
+        this.platformsRelationship = platformsRelationship;
+    }
 }

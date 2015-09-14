@@ -20,7 +20,9 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static grails.plugin.sitemapper.ValidationUtils.*;
@@ -165,6 +167,8 @@ public final class XmlEntryWriter implements EntryWriter {
                         assertDataObjectsAttr(dataObject.getAttributes());
 
                         for (PageMapDataObjectAttr attr : dataObject.getAttributes()) {
+                            assertDataObjectAttrName(attr.getName());
+
                             value += getDataObjectAttr(attr.getName(), attr.getValue());
                         }
 
@@ -178,6 +182,7 @@ public final class XmlEntryWriter implements EntryWriter {
                     String itemLocation = fixLocation(item.getLocation());
 
                     assertLocation(itemLocation);
+
                     if (item.getLicense() != null)
                         assertLocation(item.getLicense());
 
@@ -189,9 +194,43 @@ public final class XmlEntryWriter implements EntryWriter {
                     String contentLocation = item.getContentLocation() != null ? fixLocation(item.getContentLocation()) : null;
                     String playerLocation = item.getPlayerLocation() != null ? fixLocation(item.getPlayerLocation().getLocation()) : null;
                     String galleryLocation = item.getGalleryLocation() != null ? fixLocation(item.getGalleryLocation()) : null;
+                    String uploaderInfo = item.getUploaderInfo() != null ? fixLocation(item.getUploaderInfo()) : null;
 
-                    // TODO
-                    printVideo(thumbnailLocation);
+                    assertLocation(thumbnailLocation);
+                    assertVideoTitle(item.getTitle());
+                    assertVideoDescription(item.getDescription());
+
+                    if (contentLocation != null)
+                        assertLocation(contentLocation);
+
+                    if (playerLocation != null)
+                        assertLocation(playerLocation);
+
+                    if (galleryLocation != null)
+                        assertLocation(galleryLocation);
+
+                    assertDuration(item.getDuration());
+                    assertRating(item.getRating());
+
+                    List<String> platforms = new ArrayList<>();
+
+                    if (item.getPlatforms() != null) {
+                        for (Platform platform : item.getPlatforms())
+                            platforms.add(platform.name().toLowerCase());
+                    }
+
+                    printVideo(thumbnailLocation, item.getTitle(), item.getDescription(), item.getContentLocation(),
+                            item.getPlayerLocation() != null ? item.getPlayerLocation().getLocation() : null,
+                            item.getPlayerLocation() != null && item.getPlayerLocation().isAllowEmbed(),
+                            item.getPlayerLocation() != null ? item.getPlayerLocation().getAutoPlay() : null,
+                            item.getDuration(), item.getExpirationDate(), item.getRating(), item.getViewCount(),
+                            item.getPublicationDate(), item.isFamilyFriendly(), item.getCategory(), item.getTags(),
+                            item.getRestriction(), item.getRelationship().name(), galleryLocation,
+                            item.getGalleryLocationTitle(), item.getPrice(), item.getCurrency().name(),
+                            item.getPriceType().name(),
+                            item.getPriceResolution() != null ? item.getPriceResolution().name() : null,
+                            item.isRequiresSubscription(), item.getUploader(), uploaderInfo, platforms,
+                            item.getPlatformsRelationship().name(), item.isLive());
                 } else if (extension instanceof NewsExtension) {
                     // TODO https://support.google.com/news/publisher/answer/74288
                 }
@@ -255,10 +294,10 @@ public final class XmlEntryWriter implements EntryWriter {
     protected void printImage(String itemLocation, String caption, String geoLocation, String title, String license) throws IOException {
         output.append(IMAGE_OPEN);
 
-        printTag(LOCATION_TAG, itemLocation);
+        printTag(IMAGE_LOCATION_TAG, itemLocation);
 
         if (StringUtils.isNotEmpty(caption))
-            printTag(IMAGE_LOCATION_TAG, caption);
+            printTag(IMAGE_CAPTION_TAG, caption);
 
         if (StringUtils.isNotEmpty(geoLocation))
             printTag(IMAGE_GEO_LOCATION_TAG, geoLocation);
@@ -272,12 +311,94 @@ public final class XmlEntryWriter implements EntryWriter {
         output.append(IMAGE_CLOSE);
     }
 
-    protected void printVideo(String thumbnailLocation) throws IOException {
+    protected void printVideo(String thumbnailLocation, String title, String description, String contentLocation,
+                              String playerLocation, boolean allowEmbed, String autoPlay, int duration,
+                              Date expirationDate, double rating, long viewCount, Date publicationDate,
+                              boolean familyFriendly, String category, List<String> tags, List<String> restriction,
+                              String relationship, String galleryLocation, String galleryLocationTitle, double price,
+                              String currency, String priceType, String resolution, boolean requiresSubscription,
+                              String uploader, String uploaderInfo, List<String> platforms, String platformsRelationship,
+                              boolean live)
+            throws IOException {
         output.append(VIDEO_OPEN);
 
         printTag(VIDEO_THUMBNAIL_TAG, thumbnailLocation);
+        printTag(VIDEO_TITLE_TAG, title);
+        printTag(VIDEO_DESCRIPTION_TAG, description);
 
-        // TODO https://developers.google.com/webmasters/videosearch/sitemaps
+        if (contentLocation != null)
+            printTag(VIDEO_CONTENT_LOCATION_TAG, contentLocation);
+
+        if (playerLocation != null) {
+            String attrs = "allow_embed=\"" + booleanToString(allowEmbed) + "\"";
+
+            if (autoPlay != null)
+                attrs += " autoplay=\"" + escape(autoPlay) + "\"";
+
+            printTag(VIDEO_PLAYER_LOCATION_TAG, attrs, escape(playerLocation));
+        }
+
+        printTag(VIDEO_DURATION_TAG, String.valueOf(duration));
+
+        if (expirationDate != null)
+            printTag(VIDEO_EXPIRATION_DATE_TAG, dateUtils.format(expirationDate));
+
+        printTag(VIDEO_RATING_TAG, String.valueOf(rating));
+        printTag(VIDEO_VIEW_COUNT_TAG, String.valueOf(viewCount));
+
+        if (expirationDate != null)
+            printTag(VIDEO_PUBLICATION_DATE_TAG, dateUtils.format(publicationDate));
+
+        printTag(VIDEO_FAMILY_FRIENDLY_TAG, booleanToString(familyFriendly));
+
+        if (category != null)
+            printTag(VIDEO_CATEGORY_TAG, category);
+
+        if (tags != null && !tags.isEmpty()) {
+            for (String tag : tags) {
+                printTag(VIDEO_TAG_TAG, tag);
+            }
+        }
+
+        if (restriction != null && !restriction.isEmpty()) {
+            String attrs = "relationship=\"" + relationship.toLowerCase() + "\"";
+
+            printTag(VIDEO_RESTRICTION_TAG, attrs, escape(StringUtils.join(restriction, " ")));
+        }
+
+        if (galleryLocation != null) {
+            String attrs = galleryLocationTitle != null ? "title=\"" + galleryLocationTitle + "\"" : "";
+
+            printTag(VIDEO_GALLERY_LOCATION_TAG, attrs, escape(galleryLocation));
+        }
+
+        if (price > -1) {
+            String attrs = "currency=\"" + currency.toUpperCase() + "\"";
+
+            if (priceType != null)
+                attrs += " type=\"" + priceType.toLowerCase() + "\"";
+
+            if (resolution != null)
+                attrs += " resolution=\"" + resolution.toUpperCase() + "\"";
+
+            printTag(VIDEO_PRICE_TAG, attrs, escape(galleryLocation));
+        }
+
+        printTag(VIDEO_REQUIRES_SUBSCRIPTION_TAG, booleanToString(requiresSubscription));
+
+        if (uploader != null) {
+            String attrs = uploaderInfo != null ? "info=\"" + uploaderInfo + "\"" : "";
+
+            printTag(VIDEO_UPLOADER_TAG, attrs, escape(uploader));
+        }
+
+        if (platforms != null && !platforms.isEmpty()) {
+            String attrs = "relationship=\"" + platformsRelationship.toLowerCase() + "\"";
+
+            printTag(VIDEO_PLATFORM_TAG, attrs, escape(StringUtils.join(platforms, ",")));
+        }
+
+        printTag(VIDEO_LIVE_TAG, booleanToString(live));
 
         output.append(VIDEO_CLOSE);
     }
@@ -290,6 +411,10 @@ public final class XmlEntryWriter implements EntryWriter {
     protected void printTag(String tagName, String attrs, String value) throws IOException {
         String xml = String.format("<%s %s>%s</%1$s>", tagName, attrs, value);
         output.append(xml);
+    }
+
+    String booleanToString(boolean value) {
+        return value ? "yes" : "no";
     }
 
     String escape(String value) {
