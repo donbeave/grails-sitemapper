@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Kim A. Betti, Alexey Zhokhov
+ * Copyright 2015 Kim A. Betti, Alexey Zhokhov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,35 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.sitemapper.impl;
-
-import grails.plugin.sitemapper.Sitemapper;
+package grails.plugin.sitemapper;
 
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public abstract class PaginationSitemapper implements Sitemapper {
+public enum NewsGenre {
 
-    private int pageIndex;
+    PRESS_RELEASE("PressRelease"),
+    SATIRE("Satire"),
+    BLOG("Blog"),
+    OP_ED("OpEd"),
+    OPINION("Opinion"),
+    USER_GENERATED("UserGenerated");
 
-    public abstract int getPerPageCount();
+    private String value;
 
-    public abstract long getTotalCount();
-
-    public int getPageIndex() {
-        return pageIndex;
+    NewsGenre(String value) {
+        this.value = value;
     }
 
-    protected void setPageIndex(int pageIndex) {
-        this.pageIndex = pageIndex;
-    }
-
-    public int getPagesCount() {
-        return (int) Math.ceil((double) getTotalCount() / getPerPageCount());
-    }
-
-    public int getOffset() {
-        return pageIndex * getPerPageCount();
+    public String value() {
+        return value;
     }
 
 }

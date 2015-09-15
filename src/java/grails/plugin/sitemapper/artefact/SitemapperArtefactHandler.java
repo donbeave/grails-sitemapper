@@ -24,21 +24,20 @@ import org.codehaus.groovy.grails.commons.GrailsClass;
  */
 public class SitemapperArtefactHandler extends ArtefactHandlerAdapter {
 
-    public static class DefaultSitemapperClass extends AbstractGrailsClass implements SitemapperClass {
-        public DefaultSitemapperClass(Class<?> clazz) {
-            super(clazz, SitemapperArtefactHandler.SUFFIX);
-        }
-    }
-
-    public interface SitemapperClass extends GrailsClass {
-        // Nothing to see here, move along..
-    }
-
     public static final String TYPE = "Sitemapper";
     public static final String SUFFIX = "Sitemapper";
 
     public SitemapperArtefactHandler() {
         super(TYPE, SitemapperClass.class, DefaultSitemapperClass.class, SUFFIX);
+    }
+    public interface SitemapperClass extends GrailsClass {
+        // Nothing to see here, move along..
+    }
+
+    public static class DefaultSitemapperClass extends AbstractGrailsClass implements SitemapperClass {
+        public DefaultSitemapperClass(Class<?> clazz) {
+            super(clazz, SitemapperArtefactHandler.SUFFIX);
+        }
     }
 
 }

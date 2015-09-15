@@ -70,6 +70,12 @@ public final class XmlEntryWriter implements EntryWriter {
     public static final String VIDEO_UPLOADER_TAG = "video:uploader";
     public static final String VIDEO_PLATFORM_TAG = "video:platform";
     public static final String VIDEO_LIVE_TAG = "video:live";
+    public static final String NEWS_ACCESS = "news:access";
+    public static final String NEWS_GENRES = "news:genres";
+    public static final String NEWS_PUBLICATION_DATE = "news:publication_date";
+    public static final String NEWS_TITLE = "news:title";
+    public static final String NEWS_KEYWORDS = "news:keywords";
+    public static final String NEWS_STOCK_TICKERS = "news:stock_tickers";
 
     private static final String URL_OPEN = "<url>";
     private static final String URL_CLOSE = "</url>\n";
@@ -79,6 +85,10 @@ public final class XmlEntryWriter implements EntryWriter {
     private static final String IMAGE_CLOSE = "</image:image>\n";
     private static final String VIDEO_OPEN = "<video:video>";
     private static final String VIDEO_CLOSE = "</video:video>\n";
+    private static final String NEWS_OPEN = "<news:news>";
+    private static final String NEWS_CLOSE = "</news:news>\n";
+    private static final String NEWS_PUBLICATION_OPEN = "<news:publication>";
+    private static final String NEWS_PUBLICATION_CLOSE = "</news:publication>\n";
 
     private final DateUtils dateUtils = new DateUtils();
     private final Appendable output;
@@ -232,7 +242,18 @@ public final class XmlEntryWriter implements EntryWriter {
                             item.isRequiresSubscription(), item.getUploader(), uploaderInfo, platforms,
                             item.getPlatformsRelationship().name(), item.isLive());
                 } else if (extension instanceof NewsExtension) {
-                    // TODO https://support.google.com/news/publisher/answer/74288
+                    NewsExtension item = (NewsExtension) extension;
+
+                    List<String> genres = new ArrayList<>();
+
+                    if (item.getGenres() != null && !item.getGenres().isEmpty()) {
+                        for (NewsGenre genre : item.getGenres()) {
+                            genres.add(genre.value());
+                        }
+                    }
+
+                    printNews(item.getPublicationName(), item.getPublicationLanguage(), item.getAccess() != null ? item.getAccess().value() : null, genres,
+                            item.getPublicationDate(), item.getTitle(), item.getKeywords(), item.getStockTickers());
                 }
             }
         }
@@ -401,6 +422,20 @@ public final class XmlEntryWriter implements EntryWriter {
         printTag(VIDEO_LIVE_TAG, booleanToString(live));
 
         output.append(VIDEO_CLOSE);
+    }
+
+    private void printNews(String publicationName, String publicationLanguage, String access, List<String> genres,
+                           Date publicationDate, String title, List<String> keywords, List<String> stockTickers)
+            throws IOException {
+        output.append(NEWS_OPEN);
+
+        output.append(NEWS_PUBLICATION_OPEN);
+
+        // TODO
+
+        output.append(NEWS_PUBLICATION_CLOSE);
+
+        output.append(NEWS_CLOSE);
     }
 
     protected void printTag(String tagName, String value) throws IOException {

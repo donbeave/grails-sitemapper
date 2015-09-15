@@ -23,28 +23,14 @@ import java.util.List;
  */
 public class NewsExtension implements Extension {
 
-    private String access;
-    private String genres;
+    private String publicationName;
+    private String publicationLanguage;
+    private NewsAccess access;
+    private List<NewsGenre> genres;
     private Date publicationDate;
     private String title;
     private List<String> keywords;
     private List<String> stockTickers;
-
-    public String getAccess() {
-        return access;
-    }
-
-    public void setAccess(String access) {
-        this.access = access;
-    }
-
-    public String getGenres() {
-        return genres;
-    }
-
-    public void setGenres(String genres) {
-        this.genres = genres;
-    }
 
     public Date getPublicationDate() {
         return publicationDate;
@@ -76,6 +62,38 @@ public class NewsExtension implements Extension {
 
     public void setStockTickers(List<String> stockTickers) {
         this.stockTickers = stockTickers;
+    }
+
+    public String getPublicationName() {
+        return publicationName;
+    }
+
+    public void setPublicationName(String publicationName) {
+        this.publicationName = publicationName;
+    }
+
+    public String getPublicationLanguage() {
+        return publicationLanguage;
+    }
+
+    public void setPublicationLanguage(String publicationLanguage) {
+        this.publicationLanguage = publicationLanguage;
+    }
+
+    public NewsAccess getAccess() {
+        return access;
+    }
+
+    public void setAccess(NewsAccess access) {
+        this.access = access;
+    }
+
+    public List<NewsGenre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<NewsGenre> genres) {
+        this.genres = genres;
     }
 
 }

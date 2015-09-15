@@ -38,16 +38,6 @@ public abstract class AbstractSitemapWriter {
     protected Map<String, Sitemapper> sitemappers = new HashMap<String, Sitemapper>();
 
     @Required
-    @Autowired
-    public void setSitemappers(Set<Sitemapper> newMappers) {
-        sitemappers.clear();
-        for (Sitemapper mapper : newMappers) {
-            String mapperName = getMapperName(mapper.getClass());
-            sitemappers.put(mapperName, mapper);
-        }
-    }
-
-    @Required
     public void setSitemapServerUrlResolver(SitemapServerUrlResolver serverUrlResolver) {
         this.serverUrlResolver = serverUrlResolver;
     }
@@ -74,6 +64,16 @@ public abstract class AbstractSitemapWriter {
 
     public Map<String, Sitemapper> getSitemappers() {
         return sitemappers;
+    }
+
+    @Required
+    @Autowired
+    public void setSitemappers(Set<Sitemapper> newMappers) {
+        sitemappers.clear();
+        for (Sitemapper mapper : newMappers) {
+            String mapperName = getMapperName(mapper.getClass());
+            sitemappers.put(mapperName, mapper);
+        }
     }
 
     protected Sitemapper getMapperByName(String name) {
