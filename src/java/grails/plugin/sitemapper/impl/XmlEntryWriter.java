@@ -35,8 +35,6 @@ import static grails.plugin.sitemapper.ValidationUtils.*;
  */
 public final class XmlEntryWriter implements EntryWriter {
 
-    public static final Double DEFAULT_PRIORITY = 0.5;
-
     public static final String LOCATION_TAG = "loc";
     public static final String LAST_MOD_TAG = "lastmod";
     public static final String EXPIRES_TAG = "expires";
@@ -80,17 +78,17 @@ public final class XmlEntryWriter implements EntryWriter {
     public static final String NEWS_STOCK_TICKERS = "news:stock_tickers";
 
     private static final String URL_OPEN = "<url>";
-    private static final String URL_CLOSE = "</url>\n";
+    private static final String URL_CLOSE = "</url>";
     private static final String PAGE_MAP_OPEN = "<PageMap xmlns=\"http://www.google.com/schemas/sitemap-pagemap/1.0\">";
-    private static final String PAGE_MAP_CLOSE = "</PageMap>\n";
+    private static final String PAGE_MAP_CLOSE = "</PageMap>";
     private static final String IMAGE_OPEN = "<image:image>";
-    private static final String IMAGE_CLOSE = "</image:image>\n";
+    private static final String IMAGE_CLOSE = "</image:image>";
     private static final String VIDEO_OPEN = "<video:video>";
-    private static final String VIDEO_CLOSE = "</video:video>\n";
+    private static final String VIDEO_CLOSE = "</video:video>";
     private static final String NEWS_OPEN = "<news:news>";
-    private static final String NEWS_CLOSE = "</news:news>\n";
+    private static final String NEWS_CLOSE = "</news:news>";
     private static final String NEWS_PUBLICATION_OPEN = "<news:publication>";
-    private static final String NEWS_PUBLICATION_CLOSE = "</news:publication>\n";
+    private static final String NEWS_PUBLICATION_CLOSE = "</news:publication>";
 
     private final DateUtils dateUtils = new DateUtils();
     private final Appendable output;
@@ -103,7 +101,7 @@ public final class XmlEntryWriter implements EntryWriter {
 
     @Override
     public void addEntry(String location, Date modifiedAt) throws IOException {
-        addEntry(location, modifiedAt, null, DEFAULT_PRIORITY);
+        addEntry(location, modifiedAt, null, Entry.DEFAULT_PRIORITY);
     }
 
     @Override
@@ -136,7 +134,8 @@ public final class XmlEntryWriter implements EntryWriter {
         output.append(URL_OPEN);
 
         printLocation(location);
-        printLastModification(entry.getModifiedAt());
+        if (entry.getModifiedAt() != null)
+            printLastModification(entry.getModifiedAt());
 
         if (entry.getChangeFrequency() != null)
             printChangeFrequency(entry.getChangeFrequency());

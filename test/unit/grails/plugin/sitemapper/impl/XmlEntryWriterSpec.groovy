@@ -1,6 +1,6 @@
 package grails.plugin.sitemapper.impl
 
-import grails.plugin.sitemapper.SitemapperException
+import grails.plugin.sitemapper.Entry
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
@@ -30,6 +30,23 @@ class XmlEntryWriterSpec extends Specification {
         "escaped" | '''&'"><'''                                                   | "<escaped>&amp;&apos;&quot;&gt;&lt;</escaped>"
     }
 
+    def "Check entry object"() {
+        given:
+        Appendable output = new StringWriter()
+        XmlEntryWriter entryWriter = new XmlEntryWriter(output, "http://developer-b.com");
+
+        when:
+        entryWriter.add(new Entry(location: location))
+
+        then:
+        output.toString().equals(expected)
+
+        where:
+        tagName | location            | expected
+        "loc"   | 'http://test.com/1' | "<url><loc>http://test.com/1</loc></url>"
+    }
+
+    /*
     def "Priority should be between zero and one"() {
         given:
         Appendable output = Mock()
@@ -45,5 +62,6 @@ class XmlEntryWriterSpec extends Specification {
         when: entryWriter.printPriority(0.1)
         then: 1 * output.append("<priority>0.1</priority>")
     }
+    */
 
 }

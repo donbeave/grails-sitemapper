@@ -26,11 +26,13 @@ import static grails.plugin.sitemapper.ValidationUtils.assertPriority;
  */
 public class Entry {
 
+    public static final Double DEFAULT_PRIORITY = 0.5;
+
     List<Extension> extensions;
     private String location;
     private Date modifiedAt;
     private ContentChangeFrequency changeFrequency;
-    private double priority;
+    private double priority = DEFAULT_PRIORITY;
     private Date expires;
 
     public String getLocation() {
