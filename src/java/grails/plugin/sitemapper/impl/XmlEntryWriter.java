@@ -70,6 +70,8 @@ public final class XmlEntryWriter implements EntryWriter {
     public static final String VIDEO_UPLOADER_TAG = "video:uploader";
     public static final String VIDEO_PLATFORM_TAG = "video:platform";
     public static final String VIDEO_LIVE_TAG = "video:live";
+    public static final String NEWS_NAME = "news:name";
+    public static final String NEWS_LANGUAGE = "news:language";
     public static final String NEWS_ACCESS = "news:access";
     public static final String NEWS_GENRES = "news:genres";
     public static final String NEWS_PUBLICATION_DATE = "news:publication_date";
@@ -219,8 +221,8 @@ public final class XmlEntryWriter implements EntryWriter {
                     if (galleryLocation != null)
                         assertLocation(galleryLocation);
 
-                    assertDuration(item.getDuration());
-                    assertRating(item.getRating());
+                    assertVideoDuration(item.getDuration());
+                    assertVideoRating(item.getRating());
 
                     List<String> platforms = new ArrayList<>();
 
@@ -243,6 +245,11 @@ public final class XmlEntryWriter implements EntryWriter {
                             item.getPlatformsRelationship().name(), item.isLive());
                 } else if (extension instanceof NewsExtension) {
                     NewsExtension item = (NewsExtension) extension;
+
+                    assertPublicationName(item.getPublicationName());
+                    aseertPublicationLanguage(item.getPublicationLanguage());
+                    assertPublicationDate(item.getPublicationDate());
+                    assertTitle(item.getTitle());
 
                     List<String> genres = new ArrayList<>();
 
@@ -431,9 +438,25 @@ public final class XmlEntryWriter implements EntryWriter {
 
         output.append(NEWS_PUBLICATION_OPEN);
 
-        // TODO
+        printTag(NEWS_NAME, publicationName);
+        printTag(NEWS_LANGUAGE, publicationLanguage);
 
         output.append(NEWS_PUBLICATION_CLOSE);
+
+        if (access != null)
+            printTag(NEWS_ACCESS, access);
+
+        if (genres != null && !genres.isEmpty())
+            printTag(NEWS_GENRES, StringUtils.join(genres, ", "));
+
+        printTag(NEWS_PUBLICATION_DATE, dateUtils.format(publicationDate));
+        printTag(NEWS_TITLE, title);
+
+        if (keywords != null && !keywords.isEmpty())
+            printTag(NEWS_KEYWORDS, StringUtils.join(keywords, ", "));
+
+        if (stockTickers != null && !stockTickers.isEmpty())
+            printTag(NEWS_STOCK_TICKERS, StringUtils.join(stockTickers, ", "));
 
         output.append(NEWS_CLOSE);
     }

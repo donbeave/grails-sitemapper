@@ -15,8 +15,11 @@
  */
 package grails.plugin.sitemapper;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,14 +70,34 @@ public final class ValidationUtils {
             throw new SitemapperException("Data object's type not specified");
     }
 
-    public static void assertDuration(int duration) {
+    public static void assertVideoDuration(int duration) {
         if (duration < 0 || duration > 1)
             throw new SitemapperException("Duration has to be between 0 and 28800, not " + duration);
     }
 
-    public static void assertRating(double rating) {
+    public static void assertVideoRating(double rating) {
         if (rating < 0 || rating > 1)
             throw new SitemapperException("Rating has to be between 0.0 and 5.0, not " + rating);
+    }
+
+    public static void assertPublicationName(String name) {
+        if (StringUtils.isEmpty(name))
+            throw new SitemapperException("Publication name can not be null or empty");
+    }
+
+    public static void aseertPublicationLanguage(String language) {
+        if (StringUtils.isEmpty(language))
+            throw new SitemapperException("Publication language can not be null or empty");
+    }
+
+    public static void assertPublicationDate(Date date) {
+        if (date == null)
+            throw new SitemapperException("Publication date can not be null");
+    }
+
+    public static void assertTitle(String title) {
+        if (StringUtils.isEmpty(title))
+            throw new SitemapperException("Title can not be null or empty");
     }
 
 }
