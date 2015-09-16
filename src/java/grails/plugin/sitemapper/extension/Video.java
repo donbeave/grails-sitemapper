@@ -39,7 +39,7 @@ public class Video implements Extension {
     private String category;
     private List<String> tags;
     private List<String> restriction;
-    private Relationship relationship = Relationship.ALLOW;
+    private Relationship restrictionRelationship = Relationship.ALLOW;
     private String galleryLocation;
     private String galleryLocationTitle;
     private double price = -1;
@@ -149,12 +149,12 @@ public class Video implements Extension {
         this.restriction = restriction;
     }
 
-    public Relationship getRelationship() {
-        return relationship;
+    public Relationship getRestrictionRelationship() {
+        return restrictionRelationship;
     }
 
-    public void setRelationship(Relationship relationship) {
-        this.relationship = relationship;
+    public void setRestrictionRelationship(Relationship restrictionRelationship) {
+        this.restrictionRelationship = restrictionRelationship;
     }
 
     public String getGalleryLocation() {

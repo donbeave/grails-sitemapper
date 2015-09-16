@@ -240,13 +240,13 @@ public final class XmlEntryWriter implements EntryWriter {
                             platforms.add(platform.name().toLowerCase());
                     }
 
-                    printVideo(thumbnailLocation, item.getTitle(), item.getDescription(), item.getContentLocation(),
-                            item.getPlayerLocation() != null ? item.getPlayerLocation().getLocation() : null,
+                    printVideo(thumbnailLocation, item.getTitle(), item.getDescription(), contentLocation,
+                            item.getPlayerLocation() != null ? playerLocation : null,
                             item.getPlayerLocation() != null && item.getPlayerLocation().isAllowEmbed(),
                             item.getPlayerLocation() != null ? item.getPlayerLocation().getAutoPlay() : null,
                             item.getDuration(), item.getExpirationDate(), item.getRating(), item.getViewCount(),
                             item.getPublicationDate(), item.isFamilyFriendly(), item.getCategory(), item.getTags(),
-                            item.getRestriction(), item.getRelationship().name(), galleryLocation,
+                            item.getRestriction(), item.getRestrictionRelationship().name(), galleryLocation,
                             item.getGalleryLocationTitle(), item.getPrice(), item.getCurrency().name(),
                             item.getPriceType().name(),
                             item.getPriceResolution() != null ? item.getPriceResolution().name() : null,
@@ -435,7 +435,7 @@ public final class XmlEntryWriter implements EntryWriter {
         if (platforms != null && !platforms.isEmpty()) {
             String attrs = "relationship=\"" + platformsRelationship.toLowerCase() + "\"";
 
-            printTag(VIDEO_PLATFORM_TAG, attrs, escape(StringUtils.join(platforms, ",")));
+            printTag(VIDEO_PLATFORM_TAG, attrs, escape(StringUtils.join(platforms, " ")));
         }
 
         printTag(VIDEO_LIVE_TAG, booleanToString(live));
