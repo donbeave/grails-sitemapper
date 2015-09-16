@@ -178,7 +178,10 @@ public final class XmlEntryWriter implements EntryWriter {
                     for (PageMapDataObject dataObject : item.getDataObjects()) {
                         assertDataObjectType(dataObject.getType());
 
-                        String idAttr = "id=\"" + dataObject.getId() + "\"";
+                        String attrs = "";
+
+                        if (dataObject.getId() != null)
+                            attrs += "id=\"" + dataObject.getId() + "\"";
 
                         String value = "";
 
@@ -190,7 +193,7 @@ public final class XmlEntryWriter implements EntryWriter {
                             value += getDataObjectAttr(attr.getName(), attr.getValue());
                         }
 
-                        printDataObject(dataObject.getType(), idAttr, value);
+                        printDataObject(dataObject.getType(), attrs, value);
                     }
 
                     output.append(PAGE_MAP_CLOSE);
@@ -318,11 +321,12 @@ public final class XmlEntryWriter implements EntryWriter {
     }
 
     protected void printDataObject(String type, String attrs, String value) throws IOException {
-        printTag(DATA_OBJECT_TAG, "type=\"" + type + "\"" + (attrs != null ? " " + attrs : ""), value);
+        printTag(DATA_OBJECT_TAG, "type=\"" + type + "\"" + (StringUtils.isNotEmpty(attrs) ? " " + attrs : ""), value);
     }
 
     protected String getDataObjectAttr(String name, String value) throws IOException {
-        return String.format("<%s %s>%s</%1$s>", DATA_OBJECT_ATTR_TAG, "type=\"" + name + "\"", escape(value));
+        return String.format("<%s %s>%s</%1$s>", DATA_OBJECT_ATTR_TAG, "type=\"" + name + "\"",
+                StringUtils.isNotEmpty(value) ? escape(value) : "");
     }
 
     protected void printImage(String itemLocation, String caption, String geoLocation, String title, String license) throws IOException {
@@ -473,7 +477,7 @@ public final class XmlEntryWriter implements EntryWriter {
     }
 
     protected void printTag(String tagName, String attrs, String value) throws IOException {
-        String xml = String.format("<%s %s>%s</%1$s>", tagName, attrs, value);
+        String xml = String.format(StringUtils.isNotEmpty(attrs) ? "<%s %s>%s</%1$s>" : "<%s>%s</%1$s>", tagName, attrs, value);
         output.append(xml);
     }
 

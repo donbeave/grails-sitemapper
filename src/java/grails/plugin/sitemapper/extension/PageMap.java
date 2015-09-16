@@ -24,6 +24,13 @@ import java.util.List;
  */
 public class PageMap implements Extension {
 
+    public PageMap() {
+    }
+
+    public PageMap(List<PageMapDataObject> dataObjects) {
+        setDataObjects(dataObjects);
+    }
+    
     private List<PageMapDataObject> dataObjects;
 
     public List<PageMapDataObject> getDataObjects() {

@@ -1,8 +1,7 @@
 package grails.plugin.sitemapper.impl
 
 import grails.plugin.sitemapper.Entry
-import grails.plugin.sitemapper.extension.AlternateLink
-import grails.plugin.sitemapper.extension.Mobile
+import grails.plugin.sitemapper.extension.*
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
@@ -74,6 +73,27 @@ class XmlEntryWriterSpec extends Specification {
                  location: '/test',
                  language: 'ru-ru'
          )]]                                            | '<url><loc>http://t.com/uri</loc><xhtml:link rel="alternate" hreflang="ru-ru" href="http://t.com/test"/></url>'
+
+        [location  : '/uri',
+         extensions: [
+                 new PageMap([
+                         new PageMapDataObject(type: 'action', attributes: [new PageMapDataObjectAttr(name: 'label')])
+                 ])
+         ]]                                             | '<url><loc>http://t.com/uri</loc><PageMap xmlns="http://www.google.com/schemas/sitemap-pagemap/1.0"><DataObject type="action"><Attribute type="label"></Attribute></DataObject></PageMap></url>'
+
+        [location  : '/uri',
+         extensions: [
+                 new PageMap([
+                         new PageMapDataObject(type: 'action', attributes: [new PageMapDataObjectAttr(name: 'label', value: 'Download')])
+                 ])
+         ]]                                             | '<url><loc>http://t.com/uri</loc><PageMap xmlns="http://www.google.com/schemas/sitemap-pagemap/1.0"><DataObject type="action"><Attribute type="label">Download</Attribute></DataObject></PageMap></url>'
+
+        [location  : '/uri',
+         extensions: [
+                 new PageMap([
+                         new PageMapDataObject(id: 'test', type: 'action', attributes: [new PageMapDataObjectAttr(name: 'label', value: 'Download')])
+                 ])
+         ]]                                             | '<url><loc>http://t.com/uri</loc><PageMap xmlns="http://www.google.com/schemas/sitemap-pagemap/1.0"><DataObject type="action" id="test"><Attribute type="label">Download</Attribute></DataObject></PageMap></url>'
     }
 
     /*
