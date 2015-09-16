@@ -94,6 +94,35 @@ class XmlEntryWriterSpec extends Specification {
                          new PageMapDataObject(id: 'test', type: 'action', attributes: [new PageMapDataObjectAttr(name: 'label', value: 'Download')])
                  ])
          ]]                                             | '<url><loc>http://t.com/uri</loc><PageMap xmlns="http://www.google.com/schemas/sitemap-pagemap/1.0"><DataObject type="action" id="test"><Attribute type="label">Download</Attribute></DataObject></PageMap></url>'
+
+        [location  : '/uri',
+         extensions: [new Image(
+                 location: 'http://example.com/photo.jpg'
+         )]]                                            | '<url><loc>http://t.com/uri</loc><image:image><image:loc>http://example.com/photo.jpg</image:loc></image:image></url>'
+
+        [location  : '/uri',
+         extensions: [new Image(
+                 location: '/photo.jpg',
+                 caption: 'Some caption'
+         )]]                                            | '<url><loc>http://t.com/uri</loc><image:image><image:loc>http://t.com/photo.jpg</image:loc><image:caption>Some caption</image:caption></image:image></url>'
+
+        [location  : '/uri',
+         extensions: [new Image(
+                 location: '/photo.jpg',
+                 geoLocation: 'Limerick, Ireland'
+         )]]                                            | '<url><loc>http://t.com/uri</loc><image:image><image:loc>http://t.com/photo.jpg</image:loc><image:geo_location>Limerick, Ireland</image:geo_location></image:image></url>'
+
+        [location  : '/uri',
+         extensions: [new Image(
+                 location: '/photo.jpg',
+                 title: 'Some title'
+         )]]                                            | '<url><loc>http://t.com/uri</loc><image:image><image:loc>http://t.com/photo.jpg</image:loc><image:title>Some title</image:title></image:image></url>'
+
+        [location  : '/uri',
+         extensions: [new Image(
+                 location: '/photo.jpg',
+                 license: 'http://license.com'
+         )]]                                            | '<url><loc>http://t.com/uri</loc><image:image><image:loc>http://t.com/photo.jpg</image:loc><image:license>http://license.com</image:license></image:image></url>'
     }
 
     /*
