@@ -13,23 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.sitemapper;
+package grails.plugin.sitemapper.extension;
 
 import java.util.List;
 
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public class PageMapExtension implements Extension {
+public class PageMapDataObject {
 
-    private List<PageMapDataObject> dataObjects;
+    private String id;
+    private String type;
+    private List<PageMapDataObjectAttr> attributes;
 
-    public List<PageMapDataObject> getDataObjects() {
-        return dataObjects;
+    public String getId() {
+        return id;
     }
 
-    public void setDataObjects(List<PageMapDataObject> dataObjects) {
-        this.dataObjects = dataObjects;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<PageMapDataObjectAttr> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<PageMapDataObjectAttr> attributes) {
+        this.attributes = attributes;
     }
 
 }

@@ -13,13 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.sitemapper;
+package grails.plugin.sitemapper.extension;
 
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public enum Resolution {
+public enum NewsGenre {
 
-    HD, SD
+    PRESS_RELEASE("PressRelease"),
+    SATIRE("Satire"),
+    BLOG("Blog"),
+    OP_ED("OpEd"),
+    OPINION("Opinion"),
+    USER_GENERATED("UserGenerated");
+
+    private String value;
+
+    NewsGenre(String value) {
+        this.value = value;
+    }
+
+    public String value() {
+        return value;
+    }
 
 }

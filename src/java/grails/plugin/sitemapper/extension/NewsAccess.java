@@ -13,30 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.sitemapper;
+package grails.plugin.sitemapper.extension;
 
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public class AlternateLinkExtension implements Extension {
+public enum NewsAccess {
 
-    private String location;
-    private String language;
+    SUBSCRIPTION("Subscription"),
+    REGISTRATION("Registration");
 
-    public String getLocation() {
-        return location;
+    private String value;
+
+    NewsAccess(String value) {
+        this.value = value;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
+    public String value() {
+        return value;
     }
 
 }

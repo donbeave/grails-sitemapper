@@ -15,7 +15,11 @@
  */
 package grails.plugin.sitemapper.impl;
 
-import grails.plugin.sitemapper.*;
+import grails.plugin.sitemapper.ContentChangeFrequency;
+import grails.plugin.sitemapper.Entry;
+import grails.plugin.sitemapper.EntryWriter;
+import grails.plugin.sitemapper.Extension;
+import grails.plugin.sitemapper.extension.*;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -114,7 +118,9 @@ public final class XmlEntryWriter implements EntryWriter {
         output.append(URL_OPEN);
 
         printLocation(location);
-        printLastModification(modifiedAt);
+
+        if (modifiedAt != null)
+            printLastModification(modifiedAt);
 
         if (changeFrequency != null)
             printChangeFrequency(changeFrequency);
@@ -134,6 +140,7 @@ public final class XmlEntryWriter implements EntryWriter {
         output.append(URL_OPEN);
 
         printLocation(location);
+
         if (entry.getModifiedAt() != null)
             printLastModification(entry.getModifiedAt());
 
@@ -148,10 +155,10 @@ public final class XmlEntryWriter implements EntryWriter {
 
         if (entry.getExtensions() != null && !entry.getExtensions().isEmpty()) {
             for (Extension extension : entry.getExtensions()) {
-                if (extension instanceof MobileExtension) {
+                if (extension instanceof Mobile) {
                     printMobile();
-                } else if (extension instanceof AlternateLinkExtension) {
-                    AlternateLinkExtension item = (AlternateLinkExtension) extension;
+                } else if (extension instanceof AlternateLink) {
+                    AlternateLink item = (AlternateLink) extension;
 
                     String itemLocation = fixLocation(item.getLocation());
 
@@ -161,8 +168,8 @@ public final class XmlEntryWriter implements EntryWriter {
                         printAlternateLink(itemLocation, item.getLanguage());
                     else
                         printAlternateLink(itemLocation);
-                } else if (extension instanceof PageMapExtension) {
-                    PageMapExtension item = (PageMapExtension) extension;
+                } else if (extension instanceof PageMap) {
+                    PageMap item = (PageMap) extension;
 
                     output.append(PAGE_MAP_OPEN);
 
@@ -187,8 +194,8 @@ public final class XmlEntryWriter implements EntryWriter {
                     }
 
                     output.append(PAGE_MAP_CLOSE);
-                } else if (extension instanceof ImageExtension) {
-                    ImageExtension item = (ImageExtension) extension;
+                } else if (extension instanceof Image) {
+                    Image item = (Image) extension;
 
                     String itemLocation = fixLocation(item.getLocation());
 
@@ -198,8 +205,8 @@ public final class XmlEntryWriter implements EntryWriter {
                         assertLocation(item.getLicense());
 
                     printImage(itemLocation, item.getCaption(), item.getGeoLocation(), item.getTitle(), item.getLicense());
-                } else if (extension instanceof VideoExtension) {
-                    VideoExtension item = (VideoExtension) extension;
+                } else if (extension instanceof Video) {
+                    Video item = (Video) extension;
 
                     String thumbnailLocation = fixLocation(item.getThumbnailLocation());
                     String contentLocation = item.getContentLocation() != null ? fixLocation(item.getContentLocation()) : null;
@@ -242,8 +249,8 @@ public final class XmlEntryWriter implements EntryWriter {
                             item.getPriceResolution() != null ? item.getPriceResolution().name() : null,
                             item.isRequiresSubscription(), item.getUploader(), uploaderInfo, platforms,
                             item.getPlatformsRelationship().name(), item.isLive());
-                } else if (extension instanceof NewsExtension) {
-                    NewsExtension item = (NewsExtension) extension;
+                } else if (extension instanceof News) {
+                    News item = (News) extension;
 
                     assertPublicationName(item.getPublicationName());
                     aseertPublicationLanguage(item.getPublicationLanguage());

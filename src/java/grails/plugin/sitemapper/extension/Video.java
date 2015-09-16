@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.sitemapper;
+package grails.plugin.sitemapper.extension;
+
+import grails.plugin.sitemapper.Extension;
 
 import java.util.Date;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public class VideoExtension implements Extension {
+public class Video implements Extension {
 
     private String thumbnailLocation;
     private String title;

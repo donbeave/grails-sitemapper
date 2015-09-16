@@ -15,6 +15,8 @@
  */
 package grails.plugin.sitemapper;
 
+import grails.plugin.sitemapper.extension.PageMapDataObject;
+import grails.plugin.sitemapper.extension.PageMapDataObjectAttr;
 import org.apache.commons.lang.StringUtils;
 
 import java.net.MalformedURLException;

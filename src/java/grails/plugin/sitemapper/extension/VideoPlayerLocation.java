@@ -13,24 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.sitemapper;
+package grails.plugin.sitemapper.extension;
 
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public enum NewsAccess {
+public class VideoPlayerLocation {
 
-    SUBSCRIPTION("Subscription"),
-    REGISTRATION("Registration");
+    private String location;
+    private boolean allowEmbed = false;
+    private String autoPlay;
 
-    private String value;
-
-    NewsAccess(String value) {
-        this.value = value;
+    public String getLocation() {
+        return location;
     }
 
-    public String value() {
-        return value;
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public boolean isAllowEmbed() {
+        return allowEmbed;
+    }
+
+    public void setAllowEmbed(boolean allowEmbed) {
+        this.allowEmbed = allowEmbed;
+    }
+
+    public String getAutoPlay() {
+        return autoPlay;
+    }
+
+    public void setAutoPlay(String autoPlay) {
+        this.autoPlay = autoPlay;
     }
 
 }

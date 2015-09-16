@@ -13,11 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.sitemapper;
+package grails.plugin.sitemapper.extension;
+
+import grails.plugin.sitemapper.Extension;
+
+import java.util.List;
 
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public class MobileExtension implements Extension {
+public class PageMap implements Extension {
+
+    private List<PageMapDataObject> dataObjects;
+
+    public List<PageMapDataObject> getDataObjects() {
+        return dataObjects;
+    }
+
+    public void setDataObjects(List<PageMapDataObject> dataObjects) {
+        this.dataObjects = dataObjects;
+    }
 
 }

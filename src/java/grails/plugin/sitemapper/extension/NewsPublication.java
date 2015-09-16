@@ -13,28 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugin.sitemapper;
+package grails.plugin.sitemapper.extension;
 
 /**
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
  */
-public enum NewsGenre {
+public class NewsPublication {
 
-    PRESS_RELEASE("PressRelease"),
-    SATIRE("Satire"),
-    BLOG("Blog"),
-    OP_ED("OpEd"),
-    OPINION("Opinion"),
-    USER_GENERATED("UserGenerated");
+    private String name;
+    private String language;
 
-    private String value;
-
-    NewsGenre(String value) {
-        this.value = value;
+    public String getName() {
+        return name;
     }
 
-    public String value() {
-        return value;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
 }
