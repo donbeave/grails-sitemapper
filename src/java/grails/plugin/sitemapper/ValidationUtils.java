@@ -64,21 +64,21 @@ public final class ValidationUtils {
 
     public static void assertVideoTitle(String title) {
         if (title == null || title.isEmpty())
-            throw new SitemapperException("Data object's type not specified");
+            throw new SitemapperException("Title not specified");
     }
 
     public static void assertVideoDescription(String description) {
         if (description == null || description.isEmpty())
-            throw new SitemapperException("Data object's type not specified");
+            throw new SitemapperException("Description not specified");
     }
 
     public static void assertVideoDuration(int duration) {
-        if (duration < 0 || duration > 1)
+        if (duration < 0 || duration > 28800)
             throw new SitemapperException("Duration has to be between 0 and 28800, not " + duration);
     }
 
     public static void assertVideoRating(double rating) {
-        if (rating < 0 || rating > 1)
+        if (rating < 0 || rating > 5.0)
             throw new SitemapperException("Rating has to be between 0.0 and 5.0, not " + rating);
     }
 

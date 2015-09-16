@@ -123,6 +123,16 @@ class XmlEntryWriterSpec extends Specification {
                  location: '/photo.jpg',
                  license: 'http://license.com'
          )]]                                            | '<url><loc>http://t.com/uri</loc><image:image><image:loc>http://t.com/photo.jpg</image:loc><image:license>http://license.com</image:license></image:image></url>'
+
+        [location  : '/uri',
+         extensions: [new Video(
+                 thumbnailLocation: '/photo.jpg',
+                 title: 'Some title',
+                 description: 'Description of video',
+                 duration: 40,
+                 rating: 3.00
+         )]]                                            | '<url><loc>http://t.com/uri</loc><image:image><image:loc>http://t.com/photo.jpg</image:loc><image:license>http://license.com</image:license></image:image></url>'
+
     }
 
     /*

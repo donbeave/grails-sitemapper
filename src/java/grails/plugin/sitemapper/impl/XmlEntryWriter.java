@@ -381,8 +381,10 @@ public final class XmlEntryWriter implements EntryWriter {
         if (expirationDate != null)
             printTag(VIDEO_EXPIRATION_DATE_TAG, dateUtils.format(expirationDate));
 
-        printTag(VIDEO_RATING_TAG, String.valueOf(rating));
-        printTag(VIDEO_VIEW_COUNT_TAG, String.valueOf(viewCount));
+        if (rating > -1)
+            printTag(VIDEO_RATING_TAG, String.valueOf(rating));
+        if (viewCount > -1)
+            printTag(VIDEO_VIEW_COUNT_TAG, String.valueOf(viewCount));
 
         if (expirationDate != null)
             printTag(VIDEO_PUBLICATION_DATE_TAG, dateUtils.format(publicationDate));
@@ -419,7 +421,7 @@ public final class XmlEntryWriter implements EntryWriter {
             if (resolution != null)
                 attrs += " resolution=\"" + resolution.toUpperCase() + "\"";
 
-            printTag(VIDEO_PRICE_TAG, attrs, escape(galleryLocation));
+            printTag(VIDEO_PRICE_TAG, attrs, String.valueOf(price));
         }
 
         printTag(VIDEO_REQUIRES_SUBSCRIPTION_TAG, booleanToString(requiresSubscription));
