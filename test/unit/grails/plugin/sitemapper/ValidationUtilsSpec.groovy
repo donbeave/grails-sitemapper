@@ -19,7 +19,6 @@ import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
 
-
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
@@ -27,12 +26,32 @@ import spock.lang.Specification
 @TestMixin(GrailsUnitTestMixin)
 class ValidationUtilsSpec extends Specification {
 
+    def "Wrong location url"() {
+        when:
+        ValidationUtils.assertLocation("/test")
+        then:
+        SitemapperException ex = thrown()
+        ex.message == 'no protocol: /test'
+    }
+
+    def "Proper location url"() {
+        when:
+        ValidationUtils.assertLocation("http://test.com")
+        then:
+        noExceptionThrown()
+
+        when:
+        ValidationUtils.assertLocation("https://test.com/file.html?query=value#page-2")
+        then:
+        noExceptionThrown()
+    }
+
     def "Priority can't be lower than 0"() {
         when:
         ValidationUtils.assertPriority(-0.1)
         then:
         SitemapperException ex = thrown()
-        ex.message == ('Priority has to be between 0 and 1, not -0.1')
+        ex.message == 'Priority has to be between 0 and 1, not -0.1'
     }
 
     def "Priority can'b be greater than 1"() {
@@ -40,7 +59,7 @@ class ValidationUtilsSpec extends Specification {
         ValidationUtils.assertPriority(1.1)
         then:
         SitemapperException ex = thrown()
-        ex.message == ('Priority has to be between 0 and 1, not 1.1')
+        ex.message == 'Priority has to be between 0 and 1, not 1.1'
     }
 
     def "Pass priority: 0.1"() {
