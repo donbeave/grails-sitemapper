@@ -806,6 +806,108 @@ class XmlEntryWriterSpec extends Specification {
                 '</url>'
     }
 
+    def "Creating simple entry with news extension"() {
+        when:
+        entryWriter.add new Entry(location: '/uri',
+                extensions: [new News(
+                        publicationName: 'The Example Times',
+                        publicationLanguage: 'en',
+                        publicationDate: new Date(1442462269668),
+                        title: 'Companies A, B in Merger Talks'
+                )])
+
+        then:
+        output.toString() == '<url>' +
+                '<loc>http://t.com/uri</loc>' +
+                '<news:news>' +
+                '<news:publication>' +
+                '<news:name>The Example Times</news:name>' +
+                '<news:language>en</news:language>' +
+                '</news:publication>' +
+                '<news:publication_date>2015-09-17T03:57:49+00:00</news:publication_date>' +
+                '<news:title>Companies A, B in Merger Talks</news:title>' +
+                '</news:news>' +
+                '</url>'
+    }
+
+    def "Checking genres in news extension"() {
+        when:
+        entryWriter.add new Entry(location: '/uri',
+                extensions: [new News(
+                        publicationName: 'The Example Times',
+                        publicationLanguage: 'en',
+                        publicationDate: new Date(1442462269668),
+                        title: 'Companies A, B in Merger Talks',
+                        genres: [NewsGenre.PRESS_RELEASE, NewsGenre.BLOG]
+                )])
+
+        then:
+        output.toString() == '<url>' +
+                '<loc>http://t.com/uri</loc>' +
+                '<news:news>' +
+                '<news:publication>' +
+                '<news:name>The Example Times</news:name>' +
+                '<news:language>en</news:language>' +
+                '</news:publication>' +
+                '<news:genres>PressRelease, Blog</news:genres>' +
+                '<news:publication_date>2015-09-17T03:57:49+00:00</news:publication_date>' +
+                '<news:title>Companies A, B in Merger Talks</news:title>' +
+                '</news:news>' +
+                '</url>'
+    }
+
+    def "Checking keywords in news extension"() {
+        when:
+        entryWriter.add new Entry(location: '/uri',
+                extensions: [new News(
+                        publicationName: 'The Example Times',
+                        publicationLanguage: 'en',
+                        publicationDate: new Date(1442462269668),
+                        title: 'Companies A, B in Merger Talks',
+                        keywords: ['business', 'merger', 'acquisition', 'A', 'B']
+                )])
+
+        then:
+        output.toString() == '<url>' +
+                '<loc>http://t.com/uri</loc>' +
+                '<news:news>' +
+                '<news:publication>' +
+                '<news:name>The Example Times</news:name>' +
+                '<news:language>en</news:language>' +
+                '</news:publication>' +
+                '<news:publication_date>2015-09-17T03:57:49+00:00</news:publication_date>' +
+                '<news:title>Companies A, B in Merger Talks</news:title>' +
+                '<news:keywords>business, merger, acquisition, A, B</news:keywords>' +
+                '</news:news>' +
+                '</url>'
+    }
+
+    def "Checking stock stickers in news extension"() {
+        when:
+        entryWriter.add new Entry(location: '/uri',
+                extensions: [new News(
+                        publicationName: 'The Example Times',
+                        publicationLanguage: 'en',
+                        publicationDate: new Date(1442462269668),
+                        title: 'Companies A, B in Merger Talks',
+                        stockTickers: ['NASDAQ:A', 'NASDAQ:B']
+                )])
+
+        then:
+        output.toString() == '<url>' +
+                '<loc>http://t.com/uri</loc>' +
+                '<news:news>' +
+                '<news:publication>' +
+                '<news:name>The Example Times</news:name>' +
+                '<news:language>en</news:language>' +
+                '</news:publication>' +
+                '<news:publication_date>2015-09-17T03:57:49+00:00</news:publication_date>' +
+                '<news:title>Companies A, B in Merger Talks</news:title>' +
+                '<news:stock_tickers>NASDAQ:A, NASDAQ:B</news:stock_tickers>' +
+                '</news:news>' +
+                '</url>'
+    }
+
     /*
     def "Priority should be between zero and one"() {
         given:
