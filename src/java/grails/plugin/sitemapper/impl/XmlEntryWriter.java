@@ -278,10 +278,16 @@ public final class XmlEntryWriter implements EntryWriter {
     }
 
     protected String fixLocation(String url) {
-        if (url.startsWith("http://") || url.startsWith("https://"))
+        if (StringUtils.isNotEmpty(url)) {
+            url = url.trim();
+
+            if (url.startsWith("http://") || url.startsWith("https://"))
+                return url;
+            else
+                return serverUrl + url;
+        } else {
             return url;
-        else
-            return serverUrl + url;
+        }
     }
 
     protected void printLocation(String locationUrl) throws IOException {
