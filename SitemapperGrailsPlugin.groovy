@@ -27,7 +27,7 @@ import org.apache.http.impl.client.DefaultHttpClient
  */
 class SitemapperGrailsPlugin {
 
-    def version = '0.9-SNAPSHOT'
+    def version = '0.9'
     def grailsVersion = '2.0 > *'
     def pluginExcludes = [
             'lib/**',
@@ -40,7 +40,7 @@ class SitemapperGrailsPlugin {
     def developers = [
             [name: 'Kim A. Betti', email: 'kim@developer-b.com'],
             [name: 'Alexey Zhokhov', email: 'donbeave@gmail.com']]
-    def organization = [name: 'Polusharie', url: 'http://www.polusharie.com']
+    def organization = [name: 'Zhokhov', url: 'http://www.zhokhov.com']
     def issueManagement = [system: 'GITHUB', url: 'https://github.com/donbeave/grails-sitemapper/issues']
     def scm = [url: 'https://github.com/donbeave/grails-sitemapper/']
 

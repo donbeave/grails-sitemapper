@@ -20,7 +20,7 @@ In `BuildConfig.groovy`, add the dependency to "plugins" section:
 ```groovy
 plugins {
     //...
-    compile ':sitemapper:0.8'
+    compile ':sitemapper:0.9'
     //...
 }
 ```
@@ -158,7 +158,7 @@ Roadmap
 Copyright and license
 ---------------------
 
-Copyright 2010-2014 Kim A. Betti, Alexey Zhokhov under the [Apache License, Version 2.0](LICENSE). Supported by [Polusharie][polusharie].
+Copyright 2010-2015 Kim A. Betti, Alexey Zhokhov under the [Apache License, Version 2.0](LICENSE). Supported by [AZ][zhokhov].
 
-[polusharie]: http://www.polusharie.com
+[zhokhov]: http://www.zhokhov.com
 
