@@ -161,4 +161,3 @@ Copyright and license
 Copyright 2010-2015 Kim A. Betti, Alexey Zhokhov under the [Apache License, Version 2.0](LICENSE). Supported by [AZ][zhokhov].
 
 [zhokhov]: http://www.zhokhov.com
-
