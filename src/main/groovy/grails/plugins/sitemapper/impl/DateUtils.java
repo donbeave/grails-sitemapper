@@ -1,0 +1,44 @@
+/*
+ * Copyright 2015 Kim A. Betti, Alexey Zhokhov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package grails.plugins.sitemapper.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
+/**
+ * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
+ * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
+ */
+public final class DateUtils {
+
+    private static final String W3C_FULLDATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+
+    private SimpleDateFormat dateFormat;
+
+    public DateUtils() {
+        dateFormat = new SimpleDateFormat(W3C_FULLDATE_FORMAT, Locale.getDefault());
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
+    public String format(Date date) {
+        String formatted = dateFormat.format(date);
+        String postfix = formatted.substring(formatted.length() - 2); // Hack for timezone format
+        return formatted.substring(0, formatted.length() - 2) + ":" + postfix;
+    }
+
+}
