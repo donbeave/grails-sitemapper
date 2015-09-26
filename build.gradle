@@ -59,6 +59,9 @@ dependencies {
     provided 'org.grails:grails-web-boot'
     provided 'org.grails:grails-dependencies'
     provided 'javax.servlet:javax.servlet-api:3.1.0'
+
+    // TODO need to fix: Execution failed for task ':groovydoc'.
+    // java.lang.NoClassDefFoundError: org/fusesource/jansi/AnsiRenderWriter
     provided 'org.fusesource.jansi:jansi:1.11'
 
     compile 'org.apache.httpcomponents:httpclient:4.3.4'
