@@ -19,7 +19,7 @@ import grails.build.logging.GrailsConsole
  * Gant script that creates a new Grails Sitemap Artefact
  *
  * @author David Estes
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
+ * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 
 includeTargets << grailsScript('_GrailsInit')

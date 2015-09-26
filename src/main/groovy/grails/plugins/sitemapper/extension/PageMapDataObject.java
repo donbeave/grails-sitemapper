@@ -18,7 +18,7 @@ package grails.plugins.sitemapper.extension;
 import java.util.List;
 
 /**
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
+ * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 public class PageMapDataObject {
 

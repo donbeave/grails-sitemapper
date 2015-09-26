@@ -21,7 +21,7 @@ import spock.lang.Specification
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
+ * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 @TestMixin(GrailsUnitTestMixin)
 class ValidationUtilsSpec extends Specification {
