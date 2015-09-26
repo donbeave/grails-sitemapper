@@ -16,11 +16,9 @@
 package grails.plugins.sitemapper
 
 import grails.plugins.Plugin
-import grails.plugins.sitemapper.artefact.SitemapperArtefactHandler
 import grails.plugins.sitemapper.impl.XmlSitemapWriter
-import grails.util.Environment
 import groovy.util.logging.Commons
-import org.apache.http.impl.client.DefaultHttpClient
+import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
@@ -46,89 +44,51 @@ class SitemapperGrailsPlugin extends Plugin {
     ]
 
     def issueManagement = [system: 'github', url: 'https://github.com/donbeave/grails-sitemapper/issues']
-    def scm = [url: 'https://github.com/donbeave/grails-sitemapper']
-
-    def artefacts = [SitemapperArtefactHandler]
-
-    def watchedResources = [
-            'file:./grails-app/sitemaps/**/*Sitemapper.groovy',
-            'file:./plugins/*/grails-app/sitemaps/**/*Sitemapper.groovy'
-    ]
+    def scm = [system: 'Github Issues', url: 'https://github.com/donbeave/grails-sitemapper']
 
     Closure doWithSpring() {
         { ->
-            loadSitemapConfig(grailsApplication.config)
-
-            grailsApplication.sitemapperClasses.each { mapperClass ->
-                log.debug "Registering sitemapper class ${mapperClass.name} as sitemapper / bean"
-                "${mapperClass.name}Sitemapper"(mapperClass.clazz) { bean ->
-                    bean.autowire = true
-                }
+            // Configure sitemap beans
+            grailsApplication.sitemapClasses.each { GrailsSitemapClass sitemapClass ->
+                configureSitemapBeans.delegate = delegate
+                configureSitemapBeans(sitemapClass)
             }
 
-            sitemapServerUrlResolver(ConfigSitemapServerUrlResolver) {
-                grailsApplication = ref('grailsApplication')
+            sitemapServerUrlResolver(ConfigSitemapServerUrlResolver) { bean ->
+                bean.autowire = true
             }
 
             sitemapWriter(XmlSitemapWriter) { bean ->
                 bean.autowire = true
             }
 
-            searchEnginePinger(SearchEnginePinger) {
-                searchEnginePingUrls = application.config.searchEnginePingUrls ?: [:]
-                sitemapServerUrlResolver = ref('sitemapServerUrlResolver')
-                httpClient = new DefaultHttpClient()
-            }
-        }
-    }
-
-    void onChange(Map<String, Object> event) {
-        if (!grailsApplication.isArtefactOfType(SitemapperArtefactHandler.TYPE, event.source)) {
-            return
-        }
-
-        def mapperClass = grailsApplication.addArtefact(SitemapperArtefactHandler.TYPE, event.source)
-
-        beans {
-            // Redefine the sitemapper bean
-            "${mapperClass.name}Sitemapper"(mapperClass.clazz) { bean ->
-                bean.autowire = true
-            }
-
-            // Contains references to the sitemappers so
-            // it has to be re-defined as well.
-            sitemapWriter(XmlSitemapWriter) { bean ->
+            searchEnginePinger(SearchEnginePinger) { bean ->
                 bean.autowire = true
             }
         }
     }
 
-    private ConfigObject loadSitemapConfig(ConfigObject config) {
-        def classLoader = new GroovyClassLoader(getClass().classLoader)
-        String environment = Environment.current.name
+    /**
+     * Configure sitemap beans.
+     */
+    def configureSitemapBeans = { GrailsSitemapClass sitemapClass ->
+        def fullName = sitemapClass.fullName
 
-        // Note here the order of objects when calling merge - merge OVERWRITES values in the target object
-        // Load default config as a basis
-        def newConfig = new ConfigSlurper(environment).parse(
-                classLoader.loadClass('DefaultSitemapConfig')
-        )
-
-        // Overwrite defaults with what Config.groovy has supplied, perhaps from external files
-        newConfig.merge(config)
-
-        // Overwrite with contents of SitemapConfig
         try {
-            newConfig.merge(new ConfigSlurper(environment).parse(
-                    classLoader.loadClass('SitemapConfig'))
-            )
-        } catch (Exception ignored) {
-            // ignore, just use the defaults
+            "${fullName}Class"(MethodInvokingFactoryBean) {
+                targetObject = ref("grailsApplication", false)
+                targetMethod = 'getArtefact'
+                arguments = [SitemapArtefactHandler.TYPE, fullName]
+            }
+
+            "${fullName}"(ref("${fullName}Class")) { bean ->
+                bean.factoryMethod = 'newInstance'
+                bean.autowire = 'byName'
+                bean.scope = 'prototype'
+            }
+        } catch (Exception e) {
+            log.error("Error declaring ${fullName} bean in context", e)
         }
-
-        // Now merge our correctly merged DefaultSitemapConfig and SitemapConfig into the main config
-        config.merge(newConfig)
-
-        config.sitemap
     }
 
 }

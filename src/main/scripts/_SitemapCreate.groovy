@@ -24,7 +24,7 @@ siteMapCreate = { String destPath = defaultDestPath ->
     ant.mkdir dir: destPath
 
     // loading classes
-    def paginationSitemapperClass = classLoader.loadClass('grails.plugins.sitemapper.impl.PaginationSitemapper', true)
+    def paginationSitemapperClass = classLoader.loadClass('grails.plugins.sitemapper.PaginationSitemap', true)
 
     def sitemapWriter = appCtx.sitemapWriter
     String extension = sitemapWriter.extension

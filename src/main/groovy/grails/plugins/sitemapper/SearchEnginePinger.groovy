@@ -15,28 +15,32 @@
  */
 package grails.plugins.sitemapper
 
-import org.apache.commons.logging.LogFactory
+import grails.util.Holders
+import groovy.util.logging.Commons
 import org.apache.http.HttpResponse
 import org.apache.http.client.ClientProtocolException
 import org.apache.http.client.HttpClient
 import org.apache.http.client.HttpResponseException
 import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.params.HttpConnectionParams
 import org.apache.http.params.HttpParams
 import org.springframework.beans.factory.InitializingBean
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  */
+@Commons
 class SearchEnginePinger implements InitializingBean {
 
-    private static final log = LogFactory.getLog(this)
-
+    @Autowired
     SitemapServerUrlResolver sitemapServerUrlResolver
-    int pingTimeoutInSeconds = 8
 
-    HttpClient httpClient
+    HttpClient httpClient = new DefaultHttpClient()
     HttpParams httpParams
+
+    int pingTimeoutInSeconds = 8
 
     // Search engine name => url format with %s for sitemap
     Map<String, String> searchEnginePingUrls = [:]
@@ -66,6 +70,8 @@ class SearchEnginePinger implements InitializingBean {
 
     @Override
     void afterPropertiesSet() {
+        searchEnginePingUrls = Holders.config.sitemap?.searchEnginePingUrls ?: [:]
+
         httpParams = httpClient.getParams()
         HttpConnectionParams.setConnectionTimeout(httpParams, pingTimeoutInSeconds * 1000)
         HttpConnectionParams.setSoTimeout(httpParams, pingTimeoutInSeconds * 1000);

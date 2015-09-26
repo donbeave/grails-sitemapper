@@ -15,19 +15,18 @@
  */
 package grails.plugins.sitemapper.impl;
 
-import grails.plugins.sitemapper.EntryWriter;
-import grails.plugins.sitemapper.SitemapServerUrlResolver;
-import grails.plugins.sitemapper.Sitemapper;
-import org.codehaus.groovy.grails.commons.GrailsApplication;
+import grails.core.GrailsApplication;
+import grails.core.GrailsClass;
+import grails.plugins.sitemapper.*;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
@@ -40,14 +39,11 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
     private static final String SITEMAP_OPEN = "<sitemap>";
     private static final String SITEMAP_CLOSE = "</sitemap>\n";
 
+    @Autowired
+    GrailsApplication grailsApplication;
+
     public String path;
     public String extension;
-
-    private GrailsApplication grailsApplication;
-
-    public void setGrailsApplication(GrailsApplication app) {
-        grailsApplication = app;
-    }
 
     @Override
     public void afterPropertiesSet() {
@@ -55,6 +51,19 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
 
         path = properties.getProperty("sitemap.prefix");
         extension = properties.getProperty("sitemap.extension");
+
+        List<DefaultGrailsSitemapClass> sitemaps = new ArrayList<DefaultGrailsSitemapClass>();
+
+        for (GrailsClass sitemapClass : grailsApplication.getArtefacts(SitemapArtefactHandler.getTYPE())) {
+            String fullName = sitemapClass.getFullName();
+
+            DefaultGrailsSitemapClass artefact = (DefaultGrailsSitemapClass)
+                    grailsApplication.getMainContext().getBean(fullName + "Class");
+
+            sitemaps.add(artefact);
+        }
+
+        setSitemaps(sitemaps);
     }
 
     @Override
@@ -63,8 +72,8 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
 
         DateUtils dateUtils = new DateUtils();
 
-        for (Map.Entry<String, Sitemapper> entry : sitemappers.entrySet()) {
-            Sitemapper mapper = entry.getValue();
+        for (Map.Entry<String, DefaultGrailsSitemapClass> entry : sitemaps.entrySet()) {
+            GrailsSitemapClass mapper = entry.getValue();
             String mapperName = entry.getKey();
 
             String serverUrl = getServerUrl(mapper);
@@ -78,14 +87,10 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
 
             String lastMod = dateUtils.format(previousUpdate);
 
-            if (mapper instanceof PaginationSitemapper) {
-                PaginationSitemapper paginationMapper = (PaginationSitemapper) mapper;
-                int count = paginationMapper.getPagesCount();
-                for (int i = 0; i < count; i++) {
-                    writeIndexExtry(writer, serverUrl, mapperName + "-" + i, lastMod);
-                }
-            } else {
-                writeIndexExtry(writer, serverUrl, mapperName, lastMod);
+            long pagesCount = mapper.getPagesCount();
+
+            for (int pageIndex = 0; pageIndex < pagesCount; pageIndex++) {
+                writeIndexExtry(writer, serverUrl, mapperName + "-" + pageIndex, lastMod);
             }
         }
 
@@ -93,18 +98,15 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
     }
 
     @Override
-    public void writeSitemapEntries(PrintWriter writer, Sitemapper sitemapper, int pageNumber) throws IOException {
+    public void writeSitemapEntries(PrintWriter writer, GrailsSitemapClass mapper, Integer pageIndex) throws IOException {
         writeSitemapHead(writer);
-        super.writeSitemapEntries(writer, sitemapper, pageNumber);
-        writeSitemapTail(writer);
-    }
 
-    @Override
-    public void writeSitemapEntries(PrintWriter writer, Sitemapper mapper) throws IOException {
         String serverUrl = getServerUrl(mapper);
 
         EntryWriter entryWriter = new XmlEntryWriter(writer, serverUrl);
-        mapper.withEntryWriter(entryWriter);
+        mapper.withEntryWriter(entryWriter, pageIndex, mapper.getOffset(pageIndex));
+
+        writeSitemapTail(writer);
     }
 
     private void writeIndexHead(PrintWriter writer) {
@@ -138,13 +140,13 @@ public class XmlSitemapWriter extends AbstractSitemapWriter implements Initializ
         writer.print("</urlset>");
     }
 
-    private String getServerUrl(Sitemapper sitemapper) {
+    private String getServerUrl(GrailsSitemapClass sitemapper) {
         // override server url for some sitemaps
 
-        if (sitemapper instanceof SitemapServerUrlResolver &&
-                ((SitemapServerUrlResolver) sitemapper).getServerUrl() != null) {
-            return ((SitemapServerUrlResolver) sitemapper).getServerUrl();
-        }
+        String url = sitemapper.getServerUrl();
+
+        if (!StringUtils.isEmpty(url))
+            return url;
 
         return serverUrlResolver.getServerUrl();
     }

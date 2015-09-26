@@ -14,3 +14,17 @@ info:
         name: '@info.app.name@'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
+
+sitemap:
+    prefix: 'sitemap'
+    gzip: false
+    extension: 'xml'
+    searchEnginePingUrls:
+        bing: 'http://www.bing.com/webmaster/ping.aspx?siteMap=%s'
+        google: 'http://www.google.com/webmasters/sitemaps/ping?sitemap=%s'
+
+environments:
+    production:
+        sitemap:
+            gzip: true
+            extension: 'xml.gz'

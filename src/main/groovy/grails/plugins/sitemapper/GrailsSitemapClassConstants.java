@@ -13,35 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package grails.plugins.sitemapper.impl;
-
-import grails.plugins.sitemapper.Sitemapper;
+package grails.plugins.sitemapper;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
-public abstract class PaginationSitemapper implements Sitemapper {
+public final class GrailsSitemapClassConstants {
 
-    private int pageIndex;
-
-    public abstract int getPerPageCount();
-
-    public abstract long getTotalCount();
-
-    public int getPageIndex() {
-        return pageIndex;
+    // restrict instantiation
+    private GrailsSitemapClassConstants() {
     }
 
-    protected void setPageIndex(int pageIndex) {
-        this.pageIndex = pageIndex;
-    }
+    public static final String PREVIOUS_UPDATE = "previousUpdate";
 
-    public int getPagesCount() {
-        return (int) Math.ceil((double) getTotalCount() / getPerPageCount());
-    }
+    public static final String WITH_ENTRY_WRITER = "withEntryWriter";
 
-    public int getOffset() {
-        return pageIndex * getPerPageCount();
-    }
+    public static final String GET_PER_PAGE_COUNT = "getPerPageCount";
+    public static final String GET_TOTAL_COUNT = "getTotalCount";
+    public static final String GET_SERVER_URL = "getServerUrl";
 
 }

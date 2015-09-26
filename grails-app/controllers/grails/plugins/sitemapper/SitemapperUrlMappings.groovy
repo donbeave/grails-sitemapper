@@ -30,4 +30,5 @@ class SitemapperUrlMappings {
         "/${path}.${extension}"(controller: 'sitemapper', plugin: 'sitemapper')
         "/${path}.${name}.${extension}"(controller: 'sitemapper', plugin: 'sitemapper', action: 'source')
     }
+
 }

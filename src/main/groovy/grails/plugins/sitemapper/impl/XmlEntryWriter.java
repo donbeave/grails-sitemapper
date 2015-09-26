@@ -260,7 +260,7 @@ public final class XmlEntryWriter implements EntryWriter {
                     assertPublicationDate(item.getPublicationDate());
                     assertTitle(item.getTitle());
 
-                    List<String> genres = new ArrayList<>();
+                    List<String> genres = new ArrayList<String>();
 
                     if (item.getGenres() != null && !item.getGenres().isEmpty()) {
                         for (NewsGenre genre : item.getGenres()) {

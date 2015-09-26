@@ -15,6 +15,9 @@
  */
 package grails.plugins.sitemapper
 
+import grails.core.GrailsApplication
+import org.springframework.beans.factory.annotation.Autowired
+
 /**
  * Default sitemapServerUrl bean.
  * Looks up server URL in application configuration (grails.serverURL).
@@ -24,7 +27,8 @@ package grails.plugins.sitemapper
  */
 class ConfigSitemapServerUrlResolver implements SitemapServerUrlResolver {
 
-    def grailsApplication
+    @Autowired
+    GrailsApplication grailsApplication
 
     @Override
     String getServerUrl() {

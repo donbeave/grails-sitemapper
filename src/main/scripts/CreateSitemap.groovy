@@ -30,7 +30,7 @@ target(createSitemap: 'Creates a new sitemap') {
 
     pagination = GrailsConsole.instance.userInput('Add pagination support? ', ['y', 'n'] as String[])
 
-    def type = pagination.equals('y') ? 'PaginationSitemapper' : 'Sitemapper'
+    def type = pagination.equals('y') ? 'PaginationSitemap' : 'Sitemapper'
     promptForName(type: type)
 
     for (name in argsMap['params']) {

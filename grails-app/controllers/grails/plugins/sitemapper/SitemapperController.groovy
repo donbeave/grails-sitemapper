@@ -15,6 +15,7 @@
  */
 package grails.plugins.sitemapper
 
+import grails.plugins.sitemapper.impl.XmlSitemapWriter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.Assert
 
@@ -25,7 +26,7 @@ import java.util.zip.GZIPOutputStream
  * Generates sitemaps on the fly. The XML output is piped directly to
  * response.output to avoid unnecessary object generation and memory usage.
  * The drawback is that exceptions can stop the sitemap generation
- * "mid stream" so test your sitemappers.
+ * "mid stream" so test your sitemaps.
  *
  * @author <a href='mailto:kim@developer-b.com'>Kim A. Betti</a>
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
@@ -36,9 +37,8 @@ class SitemapperController {
         return new PrintWriter(new GZIPOutputStream(response.outputStream))
     }
 
-    def sitemapWriter
-
-    private Set<Sitemapper> sitemappers
+    @Autowired
+    XmlSitemapWriter sitemapWriter
 
     /**
      *  The index sitemap
@@ -59,7 +59,6 @@ class SitemapperController {
             writer = new PrintWriter(response.outputStream)
         }
 
-        sitemapWriter.sitemappers = sitemappers
         sitemapWriter.writeIndexEntries(writer)
 
         writer.flush()
@@ -85,16 +84,10 @@ class SitemapperController {
             writer = new PrintWriter(response.outputStream)
         }
 
-        sitemapWriter.sitemappers = sitemappers
         sitemapWriter.writeSitemapEntries(writer, parseName(name), parseNumber(name))
 
         writer.flush()
         writer.close()
-    }
-
-    @Autowired(required = false)
-    private void setSitemappers(Set<Sitemapper> newMappers) {
-        this.sitemappers = newMappers
     }
 
     private String parseName(String mapperName) {
