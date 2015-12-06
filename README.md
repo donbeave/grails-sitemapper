@@ -1,5 +1,7 @@
-grails-sitemapper [![Build Status](https://travis-ci.org/donbeave/grails-sitemapper.svg?branch=master)](https://travis-ci.org/donbeave/grails-sitemapper)
-=================
+# grails-sitemapper
+
+[![Build Status](https://travis-ci.org/donbeave/grails-sitemapper.svg?branch=master)](https://travis-ci.org/donbeave/grails-sitemapper)
+[![Analytics](https://ga-beacon.appspot.com/UA-71075299-1/grails-sitemapper/main-page)](https://github.com/igrigorik/ga-beacon)
 
 Grails Sitemaps plugin
 
