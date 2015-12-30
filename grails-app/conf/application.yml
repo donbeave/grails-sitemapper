@@ -1,0 +1,30 @@
+grails:
+    profile: web-plugin
+    doc:
+        title: 'Grails Sitemapper Plugin'
+        subtitle: 'Autogeneration of sitemaps.'
+        license: 'Apache License 2.0'
+        authors: 'Alexey Zhokhov'
+        copyright: 'Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.'
+        footer: "Developed by <a href='http://www.zhokhov.com'>Alexey Zhokhov</a>"
+    codegen:
+        defaultPackage: grails.plugins.sitemapper
+info:
+    app:
+        name: '@info.app.name@'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+
+sitemap:
+    prefix: 'sitemap'
+    gzip: false
+    extension: 'xml'
+    searchEnginePingUrls:
+        bing: 'http://www.bing.com/webmaster/ping.aspx?siteMap=%s'
+        google: 'http://www.google.com/webmasters/sitemaps/ping?sitemap=%s'
+
+environments:
+    production:
+        sitemap:
+            gzip: true
+            extension: 'xml.gz'
